@@ -26,23 +26,26 @@ def servoMoteur():
     servo.start(0)
 
     try:
-        while True:
-            # Déplace le servo-moteur à 0 degré (position la plus à gauche)
-            servo.ChangeDutyCycle(2)
-            time.sleep(1)
 
-            # Déplace le servo-moteur à 90 degrés (position centrale)
-            servo.ChangeDutyCycle(7)
-            time.sleep(1)
+        # Déplace le servo-moteur à 0 degré (position la plus à gauche)
+        servo.ChangeDutyCycle(2)
+        time.sleep(1)
 
-            # Déplace le servo-moteur à 180 degrés (position la plus à droite)
-            servo.ChangeDutyCycle(12)
-            time.sleep(1)
+        # Déplace le servo-moteur à 90 degrés (position centrale)
+        servo.ChangeDutyCycle(7)
+        time.sleep(1)
+
+        # Déplace le servo-moteur à 180 degrés (position la plus à droite)
+        servo.ChangeDutyCycle(12)
+        time.sleep(1)
 
     except KeyboardInterrupt:
         # Arrêt du signal PWM et nettoyage des broches GPIO
         servo.stop()
         GPIO.cleanup()
 while true:
+    servoMoteur()
+    checkCurrent()
+
 
     time.sleep(1)
