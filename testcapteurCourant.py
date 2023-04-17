@@ -14,34 +14,28 @@ def checkCurrent():
     print("Courant : %.2f mA" % current_mA)
 
 def servoMoteur():
-<<<<<<< HEAD
-    
-   
-    kit = ServoKit(channels=0)
+    # Initialise la communication avec le module PCA9685 via I2C
+    i2c = busio.I2C(board.SCL, board.SDA)
+    pca = adafruit_pca9685.PCA9685(i2c)
 
-    # Initialise le servo-moteur connecté au canal 0 avec une fréquence de 50 Hz
-    kit.servo[0].set_pulse_width_range(500, 2500)
-    kit.servo[0].actuation_range = 180
-    kit.servo[0].frequency = 50
+    # Configuration du servo-moteur
+    servo_min = 150  # Pulse de 0.15 ms
+    servo_max = 600  # Pulse de 0.60 ms
+    servo_range = servo_max - servo_min
 
-    # Fait tourner le servo-moteur de 0 à 180 degrés en incrémentant de 10 degrés toutes les 0.5 secondes
-    for angle in range(0, 181, 10):
-        kit.servo[0].angle = angle
-        time.sleep(0.5)
-
-    # Fait tourner le servo-moteur de 180 à 0 degrés en incrémentant de 10 degrés toutes les 0.5 secondes
-    for angle in range(180, -1, -10):
-        kit.servo[0].angle = angle
-        time.sleep(0.5)
-
-    # Arrête le servo-moteur
-    kit.servo[0].angle = None
+    # Configure la fréquence PWM (50 Hz pour les servo-moteurs)
+    pca.frequency = 50
 
 
-=======
-    
+    # Fait tourner le servo-moteur dans un sens
+    for pulse in range(servo_min, servo_max, 10):
+        pca.channels[0].duty_cycle = int(pulse / servo_range * 65535)
+        time.sleep(0.02)
 
-    
+    # Fait tourner le servo-moteur dans l'autre sens
+    for pulse in range(servo_max, servo_min, -10):
+        pca.channels[0].duty_cycle = int(pulse / servo_range * 65535)
+        time.sleep(0.02)
 while True:
     checkCurrent()
     servoMoteur()
