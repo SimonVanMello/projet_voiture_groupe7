@@ -8,15 +8,16 @@ import RPi.GPIO as GPIO
 # Initialisation de la communication I2C avec le capteur INA219
 i2c = busio.I2C(board.SCL, board.SDA)
 ina219 = adafruit_ina219.INA219(i2c)
+
 def checkCurrent():
     current_mA = ina219.current
-
     print("Courant : %.2f mA" % current_mA)
-def servoMoteur():
-    import time
-    from adafruit_servokit import ServoKit
 
-    kit = ServoKit(channels=16)
+def servoMoteur():
+<<<<<<< HEAD
+    
+   
+    kit = ServoKit(channels=0)
 
     # Initialise le servo-moteur connecté au canal 0 avec une fréquence de 50 Hz
     kit.servo[0].set_pulse_width_range(500, 2500)
@@ -35,9 +36,13 @@ def servoMoteur():
 
     # Arrête le servo-moteur
     kit.servo[0].angle = None
-while true:
-    servoMoteur()
+
+
+=======
+    
+
+    
+while True:
     checkCurrent()
-
-
+    servoMoteur()
     time.sleep(1)
