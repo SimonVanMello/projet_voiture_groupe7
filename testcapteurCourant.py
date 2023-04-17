@@ -27,6 +27,7 @@ def servoMoteur():
     pca.frequency = 50
 
 
+
     # Fait tourner le servo-moteur dans un sens
     for pulse in range(servo_min, servo_max, 10):
         pca.channels[0].duty_cycle = int(pulse / servo_range * 65535)
@@ -36,6 +37,7 @@ def servoMoteur():
     for pulse in range(servo_max, servo_min, -10):
         pca.channels[0].duty_cycle = int(pulse / servo_range * 65535)
         time.sleep(0.02)
+
 while True:
     checkCurrent()
     servoMoteur()
