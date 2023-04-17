@@ -13,10 +13,7 @@ def checkCurrent():
     current_mA = ina219.current
     print("Courant : %.2f mA" % current_mA)
 
-def servoMoteur():
-<<<<<<< HEAD
-    
-   
+def servoMoteur():   
     kit = ServoKit(channels=0)
 
     # Initialise le servo-moteur connecté au canal 0 avec une fréquence de 50 Hz
@@ -36,10 +33,6 @@ def servoMoteur():
 
     # Arrête le servo-moteur
     kit.servo[0].angle = None
-
-
-=======
-    
 
     
 while True:
