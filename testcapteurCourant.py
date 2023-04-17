@@ -1,44 +1,28 @@
-import board
-import busio
-import adafruit_ina219
+from future import division
 import time
-import RPi.GPIO as GPIO
+import Adafruit_PCA9685
+
+pwm = Adafruit_PCA9685.PCA9685()
+servo_min = 150
+servo_max = 600
 
 
-# Initialisation de la communication I2C avec le capteur INA219
-i2c = busio.I2C(board.SCL, board.SDA)
-ina219 = adafruit_ina219.INA219(i2c)
+def set_servo_pulse(channel ,pulse):
+    pulse_length =1000000
+    pulse_length //=60
+    print('{0} us per period' .format(pulse_length))
+    pulse_length //=4096
+    print('{0} us per bit' .format(pulse_length))
+    pulse *=1000
+    pulse //= pulse_length
+    pwm.set_pwm(channel,0,pulse)
 
-def checkCurrent():
-    current_mA = ina219.current
-    print("Courant : %.2f mA" % current_mA)
+pwm.set_pwm_freq(60)
 
-def servoMoteur():
-    # Initialise la communication avec le module PCA9685 via I2C
-    i2c = busio.I2C(board.SCL, board.SDA)
-    pca = adafruit_pca9685.PCA9685(i2c)
+print('Moving servo on channel 0')
 
-    # Configuration du servo-moteur
-    servo_min = 150  # Pulse de 0.15 ms
-    servo_max = 600  # Pulse de 0.60 ms
-    servo_range = servo_max - servo_min
-
-    # Configure la fréquence PWM (50 Hz pour les servo-moteurs)
-    pca.frequency = 50
-
-
-
-    # Fait tourner le servo-moteur dans un sens
-    for pulse in range(servo_min, servo_max, 10):
-        pca.channels[0].duty_cycle = int(pulse / servo_range * 65535)
-        time.sleep(0.02)
-
-    # Fait tourner le servo-moteur dans l'autre sens
-    for pulse in range(servo_max, servo_min, -10):
-        pca.channels[0].duty_cycle = int(pulse / servo_range * 65535)
-        time.sleep(0.02)
-
-while True:
-    checkCurrent()
-    servoMoteur()
+while True :
+    pwm.set_pwm(0,0,servo_min)
+    time.sleep(1)
+    pwm.set_pwm(0,0,servo_max)
     time.sleep(1)
