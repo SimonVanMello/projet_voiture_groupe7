@@ -6,43 +6,36 @@ import RPi.GPIO as GPIO
 
 
 # Initialisation de la communication I2C avec le capteur INA219
-i2c = busio.I2C(11, 12)
+i2c = busio.I2C(board.SCL, board.SDA)
 ina219 = adafruit_ina219.INA219(i2c)
+
 def checkCurrent():
     current_mA = ina219.current
-
     print("Courant : %.2f mA" % current_mA)
-def servoMoteur():
 
+def servoMoteur():   
+    kit = ServoKit(channels=0)
 
-    # Configuration des broches GPIO
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(18, GPIO.OUT)
+    # Initialise le servo-moteur connecté au canal 0 avec une fréquence de 50 Hz
+    kit.servo[0].set_pulse_width_range(500, 2500)
+    kit.servo[0].actuation_range = 180
+    kit.servo[0].frequency = 50
 
-    # Initialisation de la broche PWM pour le servo-moteur
-    servo = GPIO.PWM(18, 50)  # 50Hz est la fréquence standard pour les servo-moteurs
+    # Fait tourner le servo-moteur de 0 à 180 degrés en incrémentant de 10 degrés toutes les 0.5 secondes
+    for angle in range(0, 181, 10):
+        kit.servo[0].angle = angle
+        time.sleep(0.5)
 
-    # Démarrage du signal PWM
-    servo.start(0)
+    # Fait tourner le servo-moteur de 180 à 0 degrés en incrémentant de 10 degrés toutes les 0.5 secondes
+    for angle in range(180, -1, -10):
+        kit.servo[0].angle = angle
+        time.sleep(0.5)
 
-    try:
-        while True:
-            # Déplace le servo-moteur à 0 degré (position la plus à gauche)
-            servo.ChangeDutyCycle(2)
-            time.sleep(1)
+    # Arrête le servo-moteur
+    kit.servo[0].angle = None
 
-            # Déplace le servo-moteur à 90 degrés (position centrale)
-            servo.ChangeDutyCycle(7)
-            time.sleep(1)
-
-            # Déplace le servo-moteur à 180 degrés (position la plus à droite)
-            servo.ChangeDutyCycle(12)
-            time.sleep(1)
-
-    except KeyboardInterrupt:
-        # Arrêt du signal PWM et nettoyage des broches GPIO
-        servo.stop()
-        GPIO.cleanup()
-while true:
-
+    
+while True:
+    checkCurrent()
+    servoMoteur()
     time.sleep(1)
