@@ -1,66 +1,69 @@
-
 import RPi.GPIO as GPIO
 from time import sleep
 
-
-# Definition des pins
-M1_En = 4
+# Définition des pins
 M1_In1 = 15
 M1_In2 = 13
+M1_En = 4
 
-M2_En = 5
 M2_In1 = 12
 M2_In2 = 11
+M2_En = 5
 
-
-# Creation d'une liste des pins pour chaque moteur pour compacter la suite du code
-Pins = [[M1_En, M1_In1, M1_In2], [M2_En, M2_In1, M2_In2]]
-
-
-# Setup
+# Configuration des pins
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-GPIO.setup(M1_En, GPIO.OUT)
 GPIO.setup(M1_In1, GPIO.OUT)
 GPIO.setup(M1_In2, GPIO.OUT)
+GPIO.setup(M1_En, GPIO.OUT)
 
-GPIO.setup(M2_En, GPIO.OUT)
 GPIO.setup(M2_In1, GPIO.OUT)
 GPIO.setup(M2_In2, GPIO.OUT)
+GPIO.setup(M2_En, GPIO.OUT)
 
+# Configuration des objets PWM
+M1_Vitesse = GPIO.PWM(M1_En, 1000)
+M2_Vitesse = GPIO.PWM(M2_En, 1000)
+M1_Vitesse.start(0)
+M2_Vitesse.start(0)
 
-# Voir aide dans le tuto
-M1_Vitesse = GPIO.PWM(M1_En, 100)
-M2_Vitesse = GPIO.PWM(M2_En, 100)
-M1_Vitesse.start(100)
-M2_Vitesse.start(100)
-
-
+# Fonction pour faire tourner les moteurs dans le sens 1
 def sens1(moteurNum) :
     GPIO.output(Pins[moteurNum - 1][1], GPIO.HIGH)
     GPIO.output(Pins[moteurNum - 1][2], GPIO.LOW)
+    M1_Vitesse.ChangeDutyCycle(50)
+    M2_Vitesse.ChangeDutyCycle(50)
     print("Moteur", moteurNum, "tourne dans le sens 1.")
 
-
+# Fonction pour faire tourner les moteurs dans le sens 2
 def sens2(moteurNum) :
     GPIO.output(Pins[moteurNum - 1][1], GPIO.LOW)
     GPIO.output(Pins[moteurNum - 1][2], GPIO.HIGH)
+    M1_Vitesse.ChangeDutyCycle(50)
+    M2_Vitesse.ChangeDutyCycle(50)
     print("Moteur", moteurNum, "tourne dans le sens 2.")
 
+# Fonction pour arrêter un moteur
 def arret(moteurNum) :
     GPIO.output(Pins[moteurNum - 1][1], GPIO.LOW)
     GPIO.output(Pins[moteurNum - 1][2], GPIO.LOW)
-    print("Moteur", moteurNum, "arret.")
+    M1_Vitesse.ChangeDutyCycle(0)
+    M2_Vitesse.ChangeDutyCycle(0)
+    print("Moteur", moteurNum, "arrêt.")
 
+# Fonction pour arrêter complètement les moteurs
 def arretComplet() :
-    GPIO.output(Pins[0][1], GPIO.LOW)
-    GPIO.output(Pins[0][2], GPIO.LOW)
-    GPIO.output(Pins[1][1], GPIO.LOW)
-    GPIO.output(Pins[1][2], GPIO.LOW)
-    print("Moteurs arretes.")
-arretComplet()
+    GPIO.output(M1_In1, GPIO.LOW)
+    GPIO.output(M1_In2, GPIO.LOW)
+    GPIO.output(M2_In1, GPIO.LOW)
+    GPIO.output(M2_In2, GPIO.LOW)
+    M1_Vitesse.ChangeDutyCycle(0)
+    M2_Vitesse.ChangeDutyCycle(0)
+    print("Moteurs arrêtés.")
 
+# Arrêt complet des moteurs avant de commencer la boucle
+arretComplet()
 
 while True :
     # Exemple de motif de boucle
@@ -73,8 +76,4 @@ while True :
     sens2(1)
     sleep(2)
     arret(1)
-    sleep(1)
-    sens2(2)
-    sleep(2)
-    arret(2)
     sleep(1)
