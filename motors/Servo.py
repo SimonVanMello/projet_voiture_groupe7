@@ -14,9 +14,9 @@ class Servo:
     def __init__(self):
         self.__pwm = Adafruit_PCA9685.PCA9685()
         self.__pwm.set_pwm_freq(60)
-        self.__position  = 375
-        self.__SERVO_MIN = 150
-        self.__SERVO_MAX = 500
+        self._position  = 350
+        self.__SERVO_MIN = 250
+        self.__SERVO_MAX = 450
 
     # getter function using property decorator
     @property
@@ -29,14 +29,14 @@ class Servo:
 
     @property
     def position(self) -> int:
-        return self.__position
+        return self._position
 
     @position.setter
     def position(self, newPosition: int):
         if newPosition in range(self.__SERVO_MIN, self.__SERVO_MAX):
             # whenever the position change with a valid value, we update
             # the actual position by calling self.__move()
-            self.__position = newPosition
+            self._position = newPosition
             self.__move()
             print(f"Position valide: {newPosition}")
         else:
@@ -67,8 +67,18 @@ class SensorAndMotor:
         self.currentSensor = Current()
         self.servoMotor = Servo()
         self.infr = 20
+        self.__position = self.servoMotor.position
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.infr, GPIO.IN)
+
+    @property
+    def position(self) -> int:
+        return self.__position
+
+    @position.setter
+    def position(self, newPos: int):
+        if newPos in range(self.servoMotor.SERVO_MIN, self.servoMotor.SERVO_MAX):
+            self.position = newPos
 
     def checkCurrent(self):
         current_mA = self.currentSensor.checkCurrent()
@@ -76,10 +86,6 @@ class SensorAndMotor:
 
     def detectCriticalCurrent(self, threshold):
         current_mA = self.checkCurrent()
-        # if current_mA > threshold:
-        #     self.servoMotor.position = self.servoMotor.SERVO_MIN
-        # else:
-        #     self.servoMotor.position = self.servoMotor.SERVO_MAX
         while current_mA > threshold:
             if self.servoMotor.position > self.servoMotor.SERVO_MAX:
                 self.servoMotor.position -= 10
@@ -89,7 +95,7 @@ class SensorAndMotor:
     def run(self):
         while True:
             self.detectCriticalCurrent(500) # 500 mA is the threshold value
-            self.servoMotor.position = randint(150, 500)
+            self.servoMotor.position = self.position
             sleep(1)
 
 if __name__ == "__main__":
