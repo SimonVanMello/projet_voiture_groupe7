@@ -2,18 +2,15 @@
 #coding: utf-8
 
 from sensors.Ultrasonic import Ultrasonic
+from time import sleep
 
-# test left sensor
 leftSensor = Ultrasonic(23, 21)
-leftSensorDistance = leftSensor.getDistance()
-print(f"Left sensor value: {leftSensorDistance} cm")
-
-# test front sensor
 frontSensor = Ultrasonic(31, 29)
-frontSensorDistance = frontSensor.getDistance()
-print(f"Front sensor value: {frontSensorDistance} cm")
-
-# test right sensor
 rightSensor = Ultrasonic(37, 35)
-rightSensorDistance = rightSensor.getDistance()
-print(f"Right sensor value: {rightSensorDistance} cm")
+
+for i in range(10):
+    leftSensorDistance = leftSensor.getDistance()
+    frontSensorDistance = frontSensor.getDistance()
+    rightSensorDistance = rightSensor.getDistance()
+    print(f"Left: {leftSensorDistance} - Front: {frontSensorDistance} - Right: {rightSensorDistance}")
+    sleep(1)
