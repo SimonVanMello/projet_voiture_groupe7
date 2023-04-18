@@ -31,7 +31,7 @@ class Ultrasonic:
         pulse_duration = pulse_end - pulse_start
         distance = pulse_duration * 17150
         distance = round(distance, 2)
-    return distance
+        return distance
 
     # method that will run on another thread to get live distance
     # TODO: create accessors for the distance attribute to access it outside
