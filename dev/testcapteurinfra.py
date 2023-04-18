@@ -1,14 +1,18 @@
 import RPi.GPIO as GPIO
 import time
-def getInfo():
-    infr = 20
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(infr, GPIO.IN)
-    time.sleep(0.1)
 
-    # Read the sensor data
-    etat = GPIO.input(infr)
-    return etat
+class Infrarouge:
+    def __init__(self, infr_pin):
+        self.infr = infr_pin
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.infr, GPIO.IN)
+        time.sleep(0.1)
 
-while True:
-    print(getInfo())
+    def getInfo(self):
+        etat = GPIO.input(self.infr)
+        return etat
+
+if __name__ == "__main__":
+    infrarouge = Infrarouge(20)
+    while True:
+        print(infrarouge.getInfo())
