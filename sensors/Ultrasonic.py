@@ -33,11 +33,14 @@ class Ultrasonic:
         distance = round(distance, 2)
     return distance
 
+    # method that will run on another thread to get live distance
+    # TODO: create accessors for the distance attribute to access it outside
     def run(self):
         try:
             while True:
                 distance = self.getDistance() 
                 print(f"Distance: {distance} cm")
+                sleep(0.01)
         except KeyboardInterrupt:
             pass
         finally:
