@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 #coding: utf-8
 
-import Adafruit_PCA9685
+# import Adafruit_PCA9685
+import PCA9685 as p
 import adafruit_ina219
 import board
 import busio
@@ -11,8 +12,10 @@ from random import randint
 
 class Servo:
     def __init__(self):
-        self.__pwm = Adafruit_PCA9685.PCA9685()
-        self.__pwm.set_pwm_freq(60)
+        # self.__pwm = Adafruit_PCA9685.PCA9685()
+        # self.__pwm.set_pwm_freq(60)
+        self.__pwm = p.PWM() 
+        self.__pwm.frequency = 50
         self.__position  = 350
         self.__SERVO_MIN = 250
         self.__SERVO_MAX = 450
@@ -42,7 +45,8 @@ class Servo:
            print(f"Invalid value {newPosition}")
 
     def __move(self):
-        self.__pwm.set_pwm(0, 0, self.__position)
+        # self.__pwm.set_pwm(0, 0, self.__position)
+        self.__pwm.write(0, 0, self.__position)
 
 class Current:
     def __init__(self):
