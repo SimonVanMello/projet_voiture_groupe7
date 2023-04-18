@@ -1,13 +1,13 @@
-
 import RPi.GPIO as GPIO
 import time
 
-GPIO.setmode(GPIO.BOARD)
-infr = 34
+GPIO.setmode(GPIO.BCM)
+infr = 20
 GPIO.setup(infr, GPIO.IN)
+etat = GPIO.input(infr)
 
 try:
-    while 0:
+    while etat == 0:
         print("Ligne détectée")
 except KeyboardInterrupt:
     print("Ligne perdue")
