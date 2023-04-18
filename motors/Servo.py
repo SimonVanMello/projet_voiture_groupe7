@@ -2,7 +2,6 @@
 #coding: utf-8
 
 import Adafruit_PCA9685
-# from future import division
 from time import sleep
 
 class Servo:
@@ -12,16 +11,6 @@ class Servo:
         self.__position  = 375
         self.__SERVO_MIN = 150
         self.__SERVO_MAX = 600
-
-    # def set_servo_pulse(self, channel ,pulse):
-    #     pulse_length = 1000000
-    #     pulse_length //= 60
-    #     print('{0} us per period'.format(pulse_length))
-    #     pulse_length //= 4096
-    #     print('{0} us per bit'.format(pulse_length))
-    #     pulse *= 1000
-    #     pulse //= pulse_length
-    #     pwm.set_pwm(channel, 0, pulse)
 
     # getter function using property decorator
     @property
