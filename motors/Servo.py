@@ -8,6 +8,7 @@ import board
 import busio
 import RPi.GPIO as GPIO
 from time import sleep
+from random import randint
 
 class Servo:
     def __init__(self):
@@ -15,9 +16,17 @@ class Servo:
         self.__pwm.set_pwm_freq(60)
         self.__position  = 375
         self.__SERVO_MIN = 150
-        self.__SERVO_MAX = 600
+        self.__SERVO_MAX = 500
 
     # getter function using property decorator
+    @property
+    def SERVO_MIN(self) -> int:
+        return self.__SERVO_MIN
+
+    @property
+    def SERVO_MAX(self) -> int:
+        return self.__SERVO_MAX
+
     @property
     def position(self) -> int:
         return self.__position
@@ -29,7 +38,9 @@ class Servo:
             # the actual position by calling self.__move()
             self.__position = newPosition
             self.__move()
+            print(f"Position valide: {newPosition}")
         else:
+            print(newPosition)
             print("Invalid value")
 
     def __move(self):
@@ -65,15 +76,21 @@ class SensorAndMotor:
 
     def detectCriticalCurrent(self, threshold):
         current_mA = self.checkCurrent()
-        if current_mA > threshold:
-            self.servoMotor.position = self.servoMotor.__SERVO_MIN
-        else:
-            self.servoMotor.position = self.servoMotor.__SERVO_MAX
+        # if current_mA > threshold:
+        #     self.servoMotor.position = self.servoMotor.SERVO_MIN
+        # else:
+        #     self.servoMotor.position = self.servoMotor.SERVO_MAX
+        while current_mA > threshold:
+            if self.servoMotor.position > self.servoMotor.SERVO_MAX:
+                self.servoMotor.position -= 10
+            else:
+                self.servoMotor.position += 10
 
     def run(self):
         while True:
             self.detectCriticalCurrent(500) # 500 mA is the threshold value
-            time.sleep(0.1)
+            self.servoMotor.position = randint(150, 500)
+            sleep(1)
 
 if __name__ == "__main__":
     sensorMotor = SensorAndMotor()
