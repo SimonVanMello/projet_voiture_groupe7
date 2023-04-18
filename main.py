@@ -25,8 +25,7 @@ def circle():
             elif inp == "2":
                 inp = int(input("New angle: "))
                 servo.position = inp
-    except KeyboardInterrupt:
+    except:
         dc.stop()
         servo.position = 350
-
 circle()
