@@ -1,87 +1,68 @@
-import PCA9685 as p
-from time import sleep   # Import necessary modules
+from time import sleep
+import RPi.GPIO as GPIO
 
-# Set the motor pins to the appropriate channel on the PCA9685
-Motor0 = 0  # Motor 1 is connected to channel 0 on the PCA9685
-Motor1 = 1  # Motor 2 is connected to channel 1 on the PCA9685
+# Modifiez pour mettre les pins sur lesquels sont branchés les entrées de la L293D
+MOTOR1_EN = 4
+MOTOR1_A = 15
+MOTOR1_B = 13
 
-# Set the PWM channels for controlling the motor speed
-EN_M0 = 4  # PWM channel for controlling the speed of Motor 1
-EN_M1 = 5  # PWM channel for controlling the speed of Motor 2
+MOTOR2_EN = 5
+MOTOR2_A = 12
+MOTOR2_B = 11
 
-# Initialize the PWM controller
-pwm = p.PWM()
+try:
 
-# Set the PWM frequency
-pwm.frequency = 60
+    # Configure les pins
+    GPIO.setmode(GPIO.BCM)
 
-# Set the initial speed of the motors
-speed = 50
+    GPIO.setup(MOTOR1_EN, GPIO.OUT)
+    GPIO.setup(MOTOR1_A, GPIO.OUT)
+    GPIO.setup(MOTOR1_B, GPIO.OUT)
 
-# Define the motor control functions
-def motor0(x):
-    # Motor 1
-    if x == 'True':
-        pwm.write(Motor0, 4095, 0)
-    elif x == 'False':
-        pwm.write(Motor0, 0, 4095)
-    else:
-        print ('Config Error')
+    GPIO.setup(MOTOR2_EN, GPIO.OUT)
+    GPIO.setup(MOTOR2_A, GPIO.OUT)
+    GPIO.setup(MOTOR2_B, GPIO.OUT)
 
-def motor1(x):
-    # Motor 2
-    if x == 'True':
-        pwm.write(Motor1, 4095, 0)
-    elif x == 'False':
-        pwm.write(Motor1, 0, 4095)
-    else:
-        print ('Config Error')
+    motor1GPIO = GPIO.PWM(MOTOR1_EN, 100)
+    motor2GPIO = GPIO.PWM(MOTOR2_EN, 100)
 
-def setSpeed(spd):
-    global speed
-    speed = spd
-    pwm.write(EN_M0, 0, speed*16)
-    pwm.write(EN_M1, 0, speed*16)
+    # AVANCE
 
-def setup():
-    # Initialize the PCA9685
-    pwm.setup()
+    # Fais avancer le robot lentement (50%) en ligne droite
+    motor1GPIO.start(50)
+    GPIO.output(MOTOR1_A, GPIO.HIGH)
+    GPIO.output(MOTOR1_B, GPIO.LOW)
 
-def forward():
-    motor0('True')
-    motor1('True')
+    motor2GPIO.start(50)
+    GPIO.output(MOTOR2_A, GPIO.HIGH)
+    GPIO.output(MOTOR2_B, GPIO.LOW)
 
-def backward():
-    motor0('False')
-    motor1('False')
+    # Continu d'avancer pendant une seconde et demi
+    sleep(1.5)
 
-def forwardWithSpeed(spd = 50):
-    setSpeed(spd)
-    motor0('True')
-    motor1('True')
+    # RECULE EN TOURNANT
 
-def backwardWithSpeed(spd = 50):
-    setSpeed(spd)
-    motor0('False')
-    motor1('False')
+    # Fais reculer le robot en dessinant une courbe
+    motor1GPIO.start(100)
+    GPIO.output(MOTOR1_A, GPIO.LOW)
+    GPIO.output(MOTOR1_B, GPIO.HIGH)
 
-def stop():
-    motor0(None)
-    motor1(None)
+    motor2GPIO.start(60)
+    GPIO.output(MOTOR2_A, GPIO.LOW)
+    GPIO.output(MOTOR2_B, GPIO.HIGH)
 
-def test():
-    setup()
-    forwardWithSpeed(50)
-    sleep(3)
-    setSpeed(10)
-    forwardWithSpeed(10)
-    backwardWithSpeed(10)
-    sleep(3)
-    setSpeed(100)
-    forwardWithSpeed(100)
-    backwardWithSpeed(100)
-    sleep(3)
-    stop()
+    # Continu de reculer pendant 2 secondes
+    sleep(2)
 
-if __name__ == '__main__':
-    test()
+    # Arrêt des moteurs en arrêtant les cycles de travail
+    motor1GPIO.stop()
+    motor2GPIO.stop()
+
+
+except KeyboardInterrupt:
+    pass
+except:
+    GPIO.cleanup()
+    raise
+
+GPIO.cleanup()
