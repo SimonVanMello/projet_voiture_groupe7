@@ -25,7 +25,7 @@ def runCurrent():
         sleep(1)
 
 threadServo = threading.Thread(target=runServo)
-threadCurrent = threading.Current(target=runCurrent)
+threadCurrent = threading.Thread(target=runCurrent)
 
 threadServo.start()
 threadCurrent.start()
