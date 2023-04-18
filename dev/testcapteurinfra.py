@@ -2,17 +2,14 @@
 import RPi.GPIO as GPIO
 import time
 
-def callback_up(test):
-    print("Détection %s" % test)
-
-PIR = 34
-GPIO.setmode(GPIO. BCM)
-GPIO.setup(PIR, GPIO.IN)
+GPIO.setmode(GPIO.BOARD)
+infr = 34
+GPIO.setup(infr, GPIO.IN)
 
 try:
-    GPIO.add_event_detect(PIR, GPIO.RISING, callback=callback_up)
-    while 1:
-        time.sleep(100)
+    while 0:
+        print("Ligne détectée")
 except KeyboardInterrupt:
-    print("GPIO cleared")
+    print("Ligne perdue")
+finally:
     GPIO.cleanup()
