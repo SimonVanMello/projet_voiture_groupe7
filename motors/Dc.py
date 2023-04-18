@@ -42,6 +42,7 @@ class Dc:
         self.forward1 = 'True'
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BOARD)        # Number GPIOs by its physical location
+        # useless
         try:
             for line in open("config"):
                 if line[0:8] == "forward0":
@@ -87,12 +88,12 @@ class Dc:
         self.motor0(self.backward0)
         self.motor1(self.backward1)
 
-    def forwardWithSpeed(self, spd = 50):
+    def forwardWithSpeed(self, spd=50):
         self.setSpeed(spd)
         self.motor0(self.forward0)
         self.motor1(self.forward1)
 
-    def backwardWithSpeed(self, spd = 50):
+    def backwardWithSpeed(self, spd=50):
         self.setSpeed(spd)
         self.motor0(self.backward0)
         self.motor1(self.backward1)
@@ -125,7 +126,8 @@ class Dc:
             time.sleep(3)
             self.ctrl(0)
 
-try:
+if __name__ == "__main__":
+    try:
         dc = Dc()
         dc.setup()
         dc.setSpeed(10)
@@ -134,7 +136,7 @@ try:
         if choice not in ["1", "2"]:
             print("Invalid choice")
             exit
-        elif choice == "1":
+        elif choice == "2":
             dc.forward()
         else:
             dc.backward()
@@ -146,5 +148,5 @@ try:
                 exit
             else:
                 dc.setSpeed(int(nn))
-finally:                # this block will run no matter how the try block exits  
-    exit                # clean up after yourself
+    finally:                # this block will run no matter how the try block exits  
+        exit                # clean up after yourself

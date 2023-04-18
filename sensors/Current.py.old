@@ -21,4 +21,4 @@ class Current:
         while True:
             current = self.checkCurrent()
             print("Courant : %.2f mA" % current)
-            sleep(1)
+            sleep(0.5)

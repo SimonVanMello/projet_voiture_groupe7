@@ -34,7 +34,7 @@ class Ultrasonic:
         return distance
 
     # method that will run on another thread to get live distance
-    # TODO: create accessors for the distance attribute to access it outside
+    # TODO: create accessors for the distance attribute to access it from outside
     def run(self):
         try:
             while True:
@@ -45,3 +45,15 @@ class Ultrasonic:
             pass
         finally:
             GPIO.cleanup()
+
+if __name__ == "__main__":
+    leftSensor = Ultrasonic(23, 21)
+    frontSensor = Ultrasonic(31, 29)
+    rightSensor = Ultrasonic(37, 35)
+
+    for i in range(10):
+        leftSensorDistance = leftSensor.getDistance()
+        frontSensorDistance = frontSensor.getDistance()
+        rightSensorDistance = rightSensor.getDistance()
+        print(f"Left: {leftSensorDistance} - Front: {frontSensorDistance} - Right: {rightSensorDistance}")
+        time.sleep(1)

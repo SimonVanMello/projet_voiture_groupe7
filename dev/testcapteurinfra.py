@@ -16,3 +16,4 @@ if __name__ == "__main__":
     infrarouge = Infrarouge(20)
     while True:
         print(infrarouge.getInfo())
+        time.sleep(0.1)

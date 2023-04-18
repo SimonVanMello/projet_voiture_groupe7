@@ -2,12 +2,12 @@
 #coding: utf-8
 
 import Adafruit_PCA9685
-
 import adafruit_ina219
 import board
 import busio
 import RPi.GPIO as GPIO
 from time import sleep
+import threading
 from random import randint
 
 class Servo:
@@ -56,6 +56,7 @@ class Current:
         current_mA = self.ina219.current
         return current_mA
 
+    # test method
     def run(self):
         while True:
             current = self.checkCurrent()
@@ -96,8 +97,16 @@ class SensorAndMotor:
         while True:
             self.detectCriticalCurrent(500) # 500 mA is the threshold value
             self.servoMotor.position = self.position
-            sleep(1)
+            sleep(0.1)
 
 if __name__ == "__main__":
     sensorMotor = SensorAndMotor()
-    sensorMotor.run()
+    threadServo = threading.Thread(target=sensorMotor.run)
+    threadServo.start()
+
+    # test the servo motor in 10 random positions
+    for i in range(10):
+        pos = randint(250, 449)
+        print(f"Position: {pos}, current: {sensorMotor.checkCurrent()}mA")
+        sensorMotor.position = pos
+        sleep(2)
