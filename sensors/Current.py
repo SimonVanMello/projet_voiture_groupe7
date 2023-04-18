@@ -11,7 +11,7 @@ class Current:
     def __init__(self):
         # Initialisation de la communication I2C avec le capteur INA219
         self.i2c = busio.I2C(board.SCL, board.SDA)
-        self.ina219 = adafruit_ina219.INA219(i2c)
+        self.ina219 = adafruit_ina219.INA219(self.i2c)
 
     def checkCurrent(self) -> float:
         current_mA = self.ina219.current
