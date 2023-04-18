@@ -1,4 +1,5 @@
-import RPi.GPIO as GPIO          
+import RPi.GPIO as GPIO
+import Adafruit_PCA9685   
 import time
 
 pin1 = 11
@@ -14,14 +15,14 @@ GPIO.output(pin1,GPIO.LOW)
 GPIO.output(pin2,GPIO.LOW)
 p=GPIO.PWM(en,1000)
 
-p.start(25)
+p.start(30)
 print("\n")
 print("r-run s-stop f-forward b-backward l-low m-medium h-high e-exit")
 print("\n")    
 
 while(1):
 
-    x=raw_input()
+    x=input()
     
     if x=='r':
         print("run")
@@ -38,37 +39,37 @@ while(1):
 
 
     elif x=='s':
-        print("Stop")
+        print("La voiture s'arrête")
         GPIO.output(pin1,GPIO.LOW)
         GPIO.output(pin2,GPIO.LOW)
         x='z'
 
     elif x=='f':
-        print("Avancer")
+        print("La voiture avance")
         GPIO.output(pin1,GPIO.HIGH)
         GPIO.output(pin2,GPIO.LOW)
         temp1=1
         x='z'
 
     elif x=='b':
-        print("Reculer")
+        print("La voiture recule")
         GPIO.output(pin1,GPIO.LOW)
         GPIO.output(pin2,GPIO.HIGH)
         temp1=0
         x='z'
 
     elif x=='l':
-        print("low")
+        print("Vitesse faible")
         p.ChangeDutyCycle(25)
         x='z'
 
     elif x=='m':
-        print("medium")
+        print("Vitesse normale")
         p.ChangeDutyCycle(50)
         x='z'
 
     elif x=='h':
-        print("high")
+        print("Vitesse élevée")
         p.ChangeDutyCycle(75)
         x='z'
      
