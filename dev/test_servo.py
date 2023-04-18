@@ -84,7 +84,7 @@ class SensorAndMotor:
     def run(self):
         while True:
             self.detectCriticalCurrent(500) # 500 mA is the threshold value
-            self.servoMotor.position = randint(250, 450)
+            self.servoMotor.position = randint(self.servoMotor.SERVO_MIN, self.servoMotor.SERVO_MAX)
             sleep(1)
 
 if __name__ == "__main__":
