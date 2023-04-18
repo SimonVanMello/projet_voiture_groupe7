@@ -5,7 +5,6 @@ import RPi.GPIO as GPIO
 import PCA9685 as p
 import time
 
-
 class Dc:
     def __init__(self):
         # ===========================================================================
@@ -22,13 +21,13 @@ class Dc:
         # ===========================================================================
         self.EN_M0    = 4  # servo driver IC CH4
         self.EN_M1    = 5  # servo driver IC CH5
-        self.pins = [Motor0_A, Motor0_B, Motor1_A, Motor1_B]
+        self.pins = [self.Motor0_A, self.Motor0_B, self.Motor1_A, self.Motor1_B]
 
     def setSpeed(self, speed):
         speed *= 40
         print ('speed is: ', speed)
-        pwm.write(self.EN_M0, 0, speed)
-        pwm.write(self.EN_M1, 0, speed)
+        self.pwm.write(self.EN_M0, 0, speed)
+        self.pwm.write(self.EN_M1, 0, speed)
 
     def setup(self, busnum=None):
         global forward0, forward1, backward1, backward0
@@ -144,6 +143,8 @@ try:
             if nn == "stop":
                 dc.stop()
                 break
-            dc.setSpeed(int(nn))
+                exit
+            else:
+                dc.setSpeed(int(nn))
 finally:                # this block will run no matter how the try block exits  
     exit                # clean up after yourself
