@@ -1,16 +1,14 @@
 import RPi.GPIO as GPIO
 import time
+def getInfo():
+    infr = 20
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(infr, GPIO.IN)
+    time.sleep(0.1)
 
-GPIO.setmode(GPIO.BCM)
-infr = 20
-GPIO.setup(infr, GPIO.IN)
-etat = GPIO.input(infr)
+    # Read the sensor data
+    etat = GPIO.input(infr)
+    return etat
 
-try:
-    while etat == 1:
-        print("Ligne détectée")
-except:
-    while etat == 0:
-        print("Ligne perdue")
-finally:
-    GPIO.cleanup()
+while True:
+    print(getInfo())
