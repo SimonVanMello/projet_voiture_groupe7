@@ -1,87 +1,80 @@
-import PCA9685 as p
-from time import sleep   # Import necessary modules
 
-# Set the motor pins to the appropriate channel on the PCA9685
-Motor0 = 0  # Motor 1 is connected to channel 0 on the PCA9685
-Motor1 = 1  # Motor 2 is connected to channel 1 on the PCA9685
+import RPi.GPIO as GPIO
+from time import sleep
 
-# Set the PWM channels for controlling the motor speed
-EN_M0 = 4  # PWM channel for controlling the speed of Motor 1
-EN_M1 = 5  # PWM channel for controlling the speed of Motor 2
 
-# Initialize the PWM controller
-pwm = p.PWM()
+# Definition des pins
+M1_En = 4
+M1_In1 = 15
+M1_In2 = 13
 
-# Set the PWM frequency
-pwm.frequency = 60
+M2_En = 5
+M2_In1 = 12
+M2_In2 = 11
 
-# Set the initial speed of the motors
-speed = 50
 
-# Define the motor control functions
-def motor0(x):
-    # Motor 1
-    if x == 'True':
-        pwm.write(Motor0, 4095, 0)
-    elif x == 'False':
-        pwm.write(Motor0, 0, 4095)
-    else:
-        print ('Config Error')
+# Creation d'une liste des pins pour chaque moteur pour compacter la suite du code
+Pins = [[M1_En, M1_In1, M1_In2], [M2_En, M2_In1, M2_In2]]
 
-def motor1(x):
-    # Motor 2
-    if x == 'True':
-        pwm.write(Motor1, 4095, 0)
-    elif x == 'False':
-        pwm.write(Motor1, 0, 4095)
-    else:
-        print ('Config Error')
 
-def setSpeed(spd):
-    global speed
-    speed = spd
-    pwm.write(EN_M0, 0, speed*16)
-    pwm.write(EN_M1, 0, speed*16)
+# Setup
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
 
-def setup():
-    # Initialize the PCA9685
-    pwm.setup()
+GPIO.setup(M1_En, GPIO.OUT)
+GPIO.setup(M1_In1, GPIO.OUT)
+GPIO.setup(M1_In2, GPIO.OUT)
 
-def forward():
-    motor0('True')
-    motor1('True')
+GPIO.setup(M2_En, GPIO.OUT)
+GPIO.setup(M2_In1, GPIO.OUT)
+GPIO.setup(M2_In2, GPIO.OUT)
 
-def backward():
-    motor0('False')
-    motor1('False')
 
-def forwardWithSpeed(spd = 50):
-    setSpeed(spd)
-    motor0('True')
-    motor1('True')
+# Voir aide dans le tuto
+M1_Vitesse = GPIO.PWM(M1_En, 100)
+M2_Vitesse = GPIO.PWM(M2_En, 100)
+M1_Vitesse.start(100)
+M2_Vitesse.start(100)
 
-def backwardWithSpeed(spd = 50):
-    setSpeed(spd)
-    motor0('False')
-    motor1('False')
 
-def stop():
-    motor0(None)
-    motor1(None)
+def sens1(moteurNum) :
+    GPIO.output(Pins[moteurNum - 1][1], GPIO.HIGH)
+    GPIO.output(Pins[moteurNum - 1][2], GPIO.LOW)
+    print("Moteur", moteurNum, "tourne dans le sens 1.")
 
-def test():
-    setup()
-    forwardWithSpeed(50)
+
+def sens2(moteurNum) :
+    GPIO.output(Pins[moteurNum - 1][1], GPIO.LOW)
+    GPIO.output(Pins[moteurNum - 1][2], GPIO.HIGH)
+    print("Moteur", moteurNum, "tourne dans le sens 2.")
+
+def arret(moteurNum) :
+    GPIO.output(Pins[moteurNum - 1][1], GPIO.LOW)
+    GPIO.output(Pins[moteurNum - 1][2], GPIO.LOW)
+    print("Moteur", moteurNum, "arret.")
+
+def arretComplet() :
+    GPIO.output(Pins[0][1], GPIO.LOW)
+    GPIO.output(Pins[0][2], GPIO.LOW)
+    GPIO.output(Pins[1][1], GPIO.LOW)
+    GPIO.output(Pins[1][2], GPIO.LOW)
+    print("Moteurs arretes.")
+arretComplet()
+
+
+while True :
+    # Exemple de motif de boucle
+    sens1(1)
     sleep(3)
-    setSpeed(10)
-    forwardWithSpeed(10)
-    backwardWithSpeed(10)
+    sens1(2)
     sleep(3)
-    setSpeed(100)
-    forwardWithSpeed(100)
-    backwardWithSpeed(100)
-    sleep(3)
-    stop()
-
-if __name__ == '__main__':
-    test()
+    arretComplet()
+    sleep(5)
+    sens2(1)
+    sleep(2)
+    arret(1)
+    sleep(1)
+    sens2(2)
+    sleep(2)
+    arret(2)
+    sleep(1)
