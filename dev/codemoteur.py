@@ -1,3 +1,4 @@
+import RPi.GPIO as GPIO
 import time
 import Adafruit_PCA9685
 GPIO.setmode(GPIO.BCM)
