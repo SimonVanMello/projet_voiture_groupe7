@@ -13,8 +13,8 @@ from random import randint
 class Servo:
     def __init__(self):
         self.__pwm = p.PWM()
-        self.__pwm.frequency = 60
-        self._position  = 350
+        self.__pwm.frequency = 50
+        self._position  = 325
         self.__SERVO_MIN = 250
         self.__SERVO_MAX = 450
 
@@ -110,3 +110,5 @@ if __name__ == "__main__":
         print(f"Position: {pos}, current: {sensorMotor.checkCurrent()}mA")
         sensorMotor.position = pos
         sleep(2)
+    # reset position
+    sensorMotor.position = 325
