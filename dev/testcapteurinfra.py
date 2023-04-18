@@ -9,7 +9,7 @@ etat = GPIO.input(infr)
 try:
     while etat == 1:
         print("Ligne détectée")
-except KeyboardInterrupt:
+except:
     while etat == 0:
         print("Ligne perdue")
 finally:
