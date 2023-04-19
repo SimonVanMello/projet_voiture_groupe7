@@ -90,7 +90,7 @@ class SensorFollower:
 
     def follow_sensor(self):
         self.dc.setup()
-        self.dc.setSpeed(31110)
+        self.dc.setSpeed(30)
         self.dc.forward()
         try:
             while True:
