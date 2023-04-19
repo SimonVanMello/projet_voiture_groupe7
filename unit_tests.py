@@ -13,7 +13,7 @@ class Testultrasons(unittest.TestCase):
         # self.assertEqual(distance, 20)
         borninf = self.distance + (self.distance/ 11.25)
         bornsup = self.distance - (self.distance/ 11.25)
-        self.assertTrue(orninf <= distance <= bornsup)
+        self.assertTrue(borninf <= distance <= bornsup)
         # if borninf <= self.distance <= bornsup:
         #     print("Distance correct")
         # else:
@@ -25,7 +25,7 @@ class Testultrasons(unittest.TestCase):
         # self.assertEqual(distance, 20)
         borninf = self.distance + (self.distance/ 11.25)
         bornsup = self.distance - (self.distance/ 11.25)
-        self.assertTrue(orninf <= distance <= bornsup)
+        self.assertTrue(borninf <= distance <= bornsup)
         # if borninf <= self.distance <= bornsup:        
         #     print("Distance correct")
 
@@ -38,7 +38,7 @@ class Testultrasons(unittest.TestCase):
         # self.assertEqual(distance, 20)
         borninf = self.distance + (self.distance/ 11.25)
         bornsup = self.distance - (self.distance/ 11.25)
-        self.assertTrue(orninf <= distance <= bornsup)
+        self.assertTrue(borninf <= distance <= bornsup)
         # if borninf <= self.distance <= bornsup:
         #     print("Distance correct")
             
