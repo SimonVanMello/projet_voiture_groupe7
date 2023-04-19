@@ -3,6 +3,9 @@ import RPi.GPIO as GPIO
 import PCA9685 as p
 from time import sleep   # Import necessary modules
 import PCA9685 as servo
+from sensors import Ultrasonic
+from motors import Servo
+from time import sleep
 import time                  # Import necessary modules
 
 MinPulse = 200
@@ -148,6 +151,39 @@ def ctrl(status, direction=1):
 	else:
 		print ('Argument error! status must be 0 or 1.')
 
+#=========================================
+
+
+sensor = Ultrasonic(23, 21)
+leftSensor = Ultrasonic(23, 21)
+frontSensor = Ultrasonic(31, 29)
+rightSensor = Ultrasonic(37, 35)
+#sensor2 = DistanceSensor(triggerpinGPIO, echopinGPIO)
+myGPIO=25 
+myCorrection=0
+maxPW=(2.0+myCorrection)/1000
+midPW=(0.75+myCorrection)/1000
+minPW=(1.001-myCorrection)/1000
+ 
+servo = Servo(myGPIO,min_pulse_width=minPW,max_pulse_width=maxPW)
+
+while True:
+    print('DIstance en centimètre', sensor.distance*100, 'cm')
+    if (10 < sensor.distance*100 < 20 ):
+        servo.positionMid()
+        print("mid")
+        sleep(0.1)
+    if ( sensor.distance*100 < 10 ):
+        servo.positionMax()
+        print("tourne a gauche")
+        sleep(0.1)
+
+    if ( sensor.distance*100 > 20 ):
+        servo.positionMin()
+        print("tourne a droite")
+        sleep(0.1)
+
+#=========================================
 def test():
 
 	while True:

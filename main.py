@@ -55,5 +55,30 @@ class Circle:
         servo = SensorAndMotor()
         servo.position = 350
 
-circle = Circle()
-circle.run()
+class SensorFollower:
+    def __init__(self):
+        self.left_sensor = Ultrasonic(23, 21)
+        self.front_sensor = Ultrasonic(31, 29)
+        self.right_sensor = Ultrasonic(37, 35)
+        self.servo = Servo(25, min_pulse_width=1.001/1000, max_pulse_width=2.0/1000, correction=0)
+
+    def follow_sensor(self):
+        while True:
+            distance = self.front_sensor.distance * 100
+            print('Distance en centimètre:', distance, 'cm')
+            if 10 < distance < 20:
+                self.servo.position_mid()
+                print('Mid')
+                sleep(0.1)
+            elif distance < 10:
+                self.servo.position_max()
+                print('Tourne à gauche')
+                sleep(0.1)
+            elif distance > 20:
+                self.servo.position_min()
+                print('Tourne à droite')
+                sleep(0.1)
+sensorFollower = SensorFollower()
+sensorFollower.follow_sensor()
+#circle = Circle()
+#circle.run()
