@@ -7,9 +7,11 @@ import time
 from sensors.Ultrasonic import *
 
 class Testultrasonic(unittest.TestCase):
-    def __init__(self):
-        super.__init__()
-        self.distance = 10
+    @classmethod
+    def setUpClass(self):
+        # this is the expected value in cm
+        self.distance = 14
+        super().setUpClass()
 
     def test_left_mesure(self):
         leftSensor = Ultrasonic(23,21)
