@@ -14,9 +14,9 @@ class Servo:
     def __init__(self):
         self.__pwm = p.PWM()
         self.__pwm.frequency = 50
-        self._position  = 325
-        self.__SERVO_MIN = 250
-        self.__SERVO_MAX = 450
+        self.__position  = 225
+        self.__SERVO_MIN = 150
+        self.__SERVO_MAX = 400
 
     # getter function using property decorator
     @property
@@ -29,14 +29,14 @@ class Servo:
 
     @property
     def position(self) -> int:
-        return self._position
+        return self.__position
 
     @position.setter
     def position(self, newPosition: int):
         if newPosition in range(self.__SERVO_MIN, self.__SERVO_MAX):
             # whenever the position change with a valid value, we update
             # the actual position by calling self.__move()
-            self._position = newPosition
+            self.__position = newPosition
             self.__move()
             print(f"Position valide: {newPosition}")
         else:
@@ -79,36 +79,21 @@ class SensorAndMotor:
     @position.setter
     def position(self, newPos: int):
         if newPos in range(self.servoMotor.SERVO_MIN, self.servoMotor.SERVO_MAX+1):
-            self.position = newPos
-
-    def checkCurrent(self):
-        current_mA = self.currentSensor.checkCurrent()
-        return current_mA
+            self.__position = newPos
+            self.servoMotor.position = self.__position
+            # self.detectCriticalCurrent(500) # 500 mA is the threshold value
 
     def detectCriticalCurrent(self, threshold):
-        current_mA = self.checkCurrent()
-        while current_mA > threshold:
-            if self.servoMotor.position > self.servoMotor.SERVO_MAX:
-                self.servoMotor.position -= 10
-            else:
-                self.servoMotor.position += 10
-
-    def run(self):
-        while True:
-            self.detectCriticalCurrent(500) # 500 mA is the threshold value
-            self.servoMotor.position = self.position
-            sleep(0.1)
+        current_mA = self.currentSensor.checkCurrent()
+        22
 
 if __name__ == "__main__":
     sensorMotor = SensorAndMotor()
-    threadServo = threading.Thread(target=sensorMotor.run)
-    threadServo.start()
-
     # test the servo motor in 10 random positions
     for i in range(10):
-        pos = randint(250, 450)
-        print(f"Position: {pos}, current: {sensorMotor.checkCurrent()}mA")
+        pos = randint(150, 400)
+        print(f"Position: {pos}, current: {sensorMotor.currentSensor.checkCurrent()}mA")
         sensorMotor.position = pos
         sleep(2)
     # reset position
-    sensorMotor.position = 325
+    sensorMotor.position = 225

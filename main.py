@@ -9,6 +9,7 @@ def circle():
     servo = SensorAndMotor()
     servo.position = 300
     dc = Dc()
+    dc.setup()
     dc.setSpeed(20)
     threadServo = threading.Thread(target=servo.run)
     threadServo.start()

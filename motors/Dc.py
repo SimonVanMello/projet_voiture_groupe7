@@ -11,10 +11,10 @@ class Dc:
         # Raspberry Pi pin11, 12, 13 and 15 to realize the clockwise/counterclockwise
         # rotation and forward and backward movements
         # ===========================================================================
-        self.Motor0_A = 11  # pin11
-        self.Motor0_B = 12  # pin12
-        self.Motor1_A = 13  # pin13
-        self.Motor1_B = 15  # pin15
+        self.Motor0_A = 18  # pin11 24``
+        self.Motor0_B = 17  # pin12 22
+        self.Motor1_A = 22  # pin13 17 
+        self.Motor1_B = 27  # pin15 18
         # ===========================================================================
         # Set channel 4 and 5 of the DC motor driver IC to generate PWM, thus 
         # controlling the speed of the car
@@ -41,7 +41,7 @@ class Dc:
         self.forward0 = 'True'
         self.forward1 = 'True'
         GPIO.setwarnings(False)
-        GPIO.setmode(GPIO.BOARD)        # Number GPIOs by its physical location
+        GPIO.setmode(GPIO.BCM)        # Number GPIOs by its physical location
         
         if self.forward0 == 'True':
             self.backward0 = 'False'
@@ -133,7 +133,7 @@ if __name__ == "__main__":
         else:
             dc.backward()
         while True:    
-            nn = input()
+            nn = input("> ")
             if nn == "stop":
                 dc.stop()
                 break
