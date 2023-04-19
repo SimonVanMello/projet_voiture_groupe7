@@ -6,7 +6,7 @@ import time
 
 class Ultrasonic:
     def __init__(self, triggerPin: int, echoPin: int):
-        #! change into BCM
+        # ! change into BCM
         GPIO.setmode(GPIO.BOARD)
         self.GPIO_TRIGGER = triggerPin
         self.GPIO_ECHO = echoPin
