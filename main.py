@@ -13,7 +13,10 @@ def circle():
     
     try:
         servo.position = 275
-
+        dc.forward()
+        time.sleep(4)
+        dc.stop()
+        servo.position = 350
     except:
         dc.stop()
         servo.position = 350
