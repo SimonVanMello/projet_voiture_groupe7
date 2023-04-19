@@ -44,6 +44,27 @@ class Circle:
             print(e)
             dc.stop()
 
+    def smoothCircle(self):
+        servo = SensorAndMotor()
+        changePosition(servo, 275)
+        dc = Dc()
+        dc.setup()
+        dc.setSpeed(50)
+        dc.forward()
+        time.sleep(4.7)
+        changePosition(servo, 425)
+        time.sleep(5)
+        dc.stop()
+        del servo
+        del dc
+        GPIO.cleanup()
+        
+    def changePosition(self, servo: SensorAndMotor, newPos: int):
+        oldPosition = servo.position
+        for i in range(oldPosition, newPos):
+            servo.position = i
+            time.sleep(0.01)
+
     def run(self):
         self.circleRight()
         time.sleep(1)
@@ -54,6 +75,10 @@ class Circle:
     def resetDirection(self):
         servo = SensorAndMotor()
         servo.position = 350
+
+#circle = Circle()
+#circle.run()
+#circle.smoothCircle()
 
 class SensorFollower:
     def __init__(self):
@@ -90,5 +115,3 @@ class SensorFollower:
 
 sensorFollower = SensorFollower()
 sensorFollower.follow_sensor()
-#circle = Circle()
-#circle.run()
