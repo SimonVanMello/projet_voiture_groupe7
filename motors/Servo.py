@@ -6,7 +6,7 @@ import adafruit_ina219
 import board
 import busio
 import RPi.GPIO as GPIO
-from time import sleep
+import time
 import threading
 from random import randint
 
@@ -61,7 +61,7 @@ class Current:
         while True:
             current = self.checkCurrent()
             print("Courant : %.2f mA" % current)
-            sleep(1)
+            time.sleep(1)
 
 class SensorAndMotor:
     def __init__(self):
@@ -94,6 +94,6 @@ if __name__ == "__main__":
         pos = randint(150, 400)
         print(f"Position: {pos}, current: {sensorMotor.currentSensor.checkCurrent()}mA")
         sensorMotor.position = pos
-        sleep(2)
+        time.sleep(2)
     # reset position
     sensorMotor.position = 225
