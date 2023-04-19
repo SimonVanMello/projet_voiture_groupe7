@@ -3,21 +3,57 @@
 
 from motors.Dc import Dc
 from motors.Servo import SensorAndMotor
-import threading
+from sensors.Ultrasonic import Ultrasonic
+import time
+import RPi.GPIO as GPIO
 
-def circle():
-    servo = SensorAndMotor()
-    dc = Dc()
-    dc.setup()
-    dc.setSpeed(40)
-    
-    try:
-        servo.position = 275
-        dc.forward()
-        time.sleep(4)
-        dc.stop()
+class Circle:
+    def circleRight(self):
+        try:
+            servo = SensorAndMotor()
+            servo.position = 425
+            time.sleep(1)
+            dc = Dc()
+            dc.setup()
+            dc.setSpeed(50)
+            dc.forward()
+            time.sleep(5)
+            dc.stop()
+            del servo
+            del dc
+            GPIO.cleanup()
+        except Exception as e:
+            print(e)
+            dc.stop()
+
+    def circleLeft(self):
+        try:
+            servo = SensorAndMotor()
+            servo.position = 275
+            time.sleep(1)
+            dc = Dc()
+            dc.setup()
+            dc.setSpeed(50)
+            dc.forward()
+            time.sleep(4.7)
+            dc.stop()
+            del servo
+            del dc
+            GPIO.cleanup()
+        except Exception as e:
+            print(e)
+            dc.stop()
+
+    def run(self):
+        self.circleRight()
+        time.sleep(1)
+        self.circleLeft()
+        time.sleep(1)
+        self.resetDirection()
+
+    def resetDirection(self):
+        servo = SensorAndMotor()
         servo.position = 350
-    except:
-        dc.stop()
-        servo.position = 350
-circle()
+
+circle = Circle()
+circle.run()
