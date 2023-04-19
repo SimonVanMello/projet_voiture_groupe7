@@ -30,8 +30,8 @@ class Dc:
         self.pwm.write(self.EN_M1, 0, speed)
 
     def setup(self, busnum=None):
-        global forward0, forward1, backward1, backward0
-        global pwm
+        # global forward0, forward1, backward1, backward0
+        # global pwm
         if busnum == None:
             self.pwm = p.PWM()                  # Initialize the servo controller.
         else:
@@ -42,15 +42,7 @@ class Dc:
         self.forward1 = 'True'
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BOARD)        # Number GPIOs by its physical location
-        # useless
-        try:
-            for line in open("config"):
-                if line[0:8] == "forward0":
-                    self.forward0 = line[11:-1]
-                if line[0:8] == "forward1":
-                    self.forward1 = line[11:-1]
-        except:
-            pass
+        
         if self.forward0 == 'True':
             self.backward0 = 'False'
         elif self.forward0 == 'False':
