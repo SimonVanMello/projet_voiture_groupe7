@@ -22,18 +22,32 @@ class Testultrasons(unittest.TestCase):
         distance = rightSensor.getDistance()
         self.assertEqual(distance, 20)
 
-    if test_left_mesure == True:
+    if test_left_mesure + (test_left_mesure.distance/11.25) == True:
         print("Distance correct")
-    else:
-        print("Distnce erronée")
-    if test_left_mesure == True:
+    
+    elif test_left_mesure - (test_left_mesure.distance/11.25) == True:
         print("Distance correct")
+
     else:
-        print("Distnce erronée")
-    if test_right_mesure == True:
+        print("Distance erronée")
+
+    if test_front_mesure + (test_left_mesure.distance/11.25) == True:
         print("Distance correct")
+
+    elif test_front_mesure - (test_left_mesure.distance/11.25) == True:
+        print("Distance correct")
+
     else:
-        print("Distnce erronée")
+        print("Distance erronée")
+
+    if test_right_mesure + (test_left_mesure.distance/11.25) == True:
+        print("Distance correct")
+
+    elif test_right_mesure - (test_left_mesure.distance/11.25) == True:
+        print("Distance correct")
+        
+    else:
+        print("Distance erronée")
 
 if __name__ == '__main__':
     unittest.main()
