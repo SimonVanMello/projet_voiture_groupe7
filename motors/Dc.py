@@ -128,7 +128,7 @@ if __name__ == "__main__":
         if choice not in ["1", "2"]:
             print("Invalid choice")
             exit
-        elif choice == "2":
+        elif choice == "1":
             dc.forward()
         else:
             dc.backward()
