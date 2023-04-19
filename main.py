@@ -61,7 +61,7 @@ class Circle:
         
     def changePosition(self, servo: SensorAndMotor, newPos: int, delay: float):
         oldPosition = servo.position
-        for i in range(oldPosition, newPos):
+        for i in range(oldPosition, newPos+1):
             servo.position = i
             time.sleep(delay)
 
