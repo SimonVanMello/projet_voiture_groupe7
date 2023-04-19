@@ -6,7 +6,7 @@ import unittest
 import time
 from sensors.Ultrasonic import *
 
-class Testultrasons(unittest.TestCase):
+class Testultrasonic(unittest.TestCase):
     def test_left_mesure(self):
         leftSensor = Ultrasonic(23,21)
         distance = leftSensor.getDistance()
@@ -44,6 +44,12 @@ class Testultrasons(unittest.TestCase):
             
         # else:
         #     print("Distance erronée")
+
+class TestInfra(unittest.TestCase):
+    def test_infra(self):
+        ir = Infra(20)
+        result = ir.getInfo()
+        self.assertEquals(1, result)
 
 if __name__ == '__main__':
     unittest.main()
