@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import unittest
 import time
-import from sensors.Ultrasonic import Ultrasonic
+from sensors.Ultrasonic import Ultrasonic
 
 ''' ou alors, à voir
 GPIO.setmode(GPIO.BOARD)
