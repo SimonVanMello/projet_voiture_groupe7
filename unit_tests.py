@@ -16,7 +16,6 @@ class Testultrasons(unittest.TestCase):
 
         if borninf <= self.distance <= bornsup:
             print("Distance correct")
-
         else:
             print("Distance erronée")
 
