@@ -11,16 +11,18 @@ def setup():
     pwm.frequency = 50
 
 def servo_test():
-    inp = ""
-    while inp != "stop":
+    while 1:
         try:
-            if int(inp) in range(MinPulse, MaxPulse+1):
+            inp = input("> ")
+            if inp == "stop":
+                break
+            elif int(inp) in range(MinPulse, MaxPulse+1):
                 pwm.write(0, 0, int(inp))
             else:
                 print(f"Not in range [{MinPulse}, {MaxPulse}]")
-            inp = input("> ")
         except:
             print("Incorrect value")
+        time.sleep(0.5)
     pwm.write(0, 0, 350)
 
 if __name__ == '__main__':
