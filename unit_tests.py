@@ -6,14 +6,6 @@ import unittest
 import time
 from sensors.Ultrasonic import *
 
-''' ou alors, à voir
-GPIO.setmode(GPIO.BOARD)
-pin1 = 23
-pin2 = 21
-GPIO.setup(pin1, GPIO.IN)
-GPIO.setup(pin2, GPIO.IN)
-'''
-
 class Testultrasons(unittest.TestCase):
     def test_left_mesure(self):
         leftSensor = Ultrasonic(23,21)
@@ -29,6 +21,19 @@ class Testultrasons(unittest.TestCase):
         rightSensor = Ultrasonic(37,35)
         distance = rightSensor.getDistance()
         self.assertEqual(distance, 20)
+
+    if test_left_mesure == True:
+        print("Distance correct")
+    else:
+        print("Distnce erronée")
+    if test_left_mesure == True:
+        print("Distance correct")
+    else:
+        print("Distnce erronée")
+    if test_right_mesure == True:
+        print("Distance correct")
+    else:
+        print("Distnce erronée")
 
 if __name__ == '__main__':
     unittest.main()
