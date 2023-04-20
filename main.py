@@ -97,29 +97,42 @@ class SensorFollower:
                 left_distance = self.left_sensor.getDistance()
                 right_distance = self.right_sensor.getDistance()
                 front_distance = self.front_sensor.getDistance()
+                prox_wall=''
+            
                 ## Determine which way to turn
                 print(left_distance)
                 if(left_distance < right_distance):
+                    prox_wall='left'
                     if 10 < left_distance < 40:
-                        self.servo.position = 350
+                        self.servo.position = 425
                         print('Mid')
                     elif left_distance < 10:
-                        self.servo.position = 425
+                        
+                        self.servo.position = 500
                         print('Tourne à droite')
                     elif left_distance > 40:
-                        self.changePosition(275, 0.01)
+                        self.servo.position = 350
                         print('Tourne à gauche')
 
                 elif(right_distance < left_distance):
+                    prox_wall='righ'
                     if 10 < right_distance < 40:
-                        self.servo.position = 350
+                        self.servo.position = 425
                         print('Mid')
                     elif right_distance < 10:
-                        self.servo.position = 425
+                        self.servo.position = 500
                         print('Tourne à droite')
                     elif right_distance > 40:
-                        self.servo.position = 275
+                        self.servo.position = 350
                         print('Tourne à gauche')
+                elif front_distance < 10:
+                    if prox_wall == 'left':
+                        self.servo.position = 500 #turn right
+                    elif prox_wall == 'right':
+                        self.servo.position =350  #turn left
+
+
+
 
                 time.sleep(0.1)
 
