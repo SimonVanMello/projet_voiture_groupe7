@@ -3,7 +3,7 @@ import time
 import unittest
 
 class moteurs(unittest.TestCase):
-    def testAvant(self):
+    def testArriere(self):
         print("Activation des moteurs")
         time.sleep(1.5)
 
@@ -28,7 +28,7 @@ class moteurs(unittest.TestCase):
         time.sleep(2)
         GPIO.cleanup()
 
-    def testArriere(self):
+    def testAvant(self):
 
         print("Activation des moteurs")
         time.sleep(1.5)
