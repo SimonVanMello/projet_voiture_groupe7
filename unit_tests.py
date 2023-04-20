@@ -21,7 +21,7 @@ class TestUltrasonic(unittest.TestCase):
         # self.assertEqual(distance, 20)
         borninf = self.distance - (self.distance/ 11.25)
         bornsup = self.distance + (self.distance/ 11.25)
-        self.assertTrue(borninf <= distance <= bornsup, "left distance")
+        self.assertTrue(borninf <= distance <= bornsup, f"left distance: {distance}")
         # if borninf <= self.distance <= bornsup:
         #     print("Distance correct")
         # else:
@@ -34,7 +34,7 @@ class TestUltrasonic(unittest.TestCase):
         # self.assertEqual(distance, 20)
         borninf = self.distance - (self.distance/ 11.25)
         bornsup = self.distance + (self.distance/ 11.25)
-        self.assertTrue(borninf <= distance <= bornsup, "front distance")
+        self.assertTrue(borninf <= distance <= bornsup, f"front distance: {distance}")
         # if borninf <= self.distance <= bornsup:        
         #     print("Distance correct")
 
