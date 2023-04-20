@@ -106,14 +106,10 @@ class SensorFollower:
                     elif left_distance < 10:
                         self.servo.position = 425
                         print('Tourne à droite')
-                        if 10 < left_distance < 20:
-                            self.servo.position = 350"
                     elif left_distance > 40:
-                        self.servo.position = 275
+                        self.changePosition(275, 0.01)
                         print('Tourne à gauche')
-                        if 10 < left_distance < 40:
-                            self.servo.position = 425
-                    time.sleep(0.1)
+
                 elif(right_distance < left_distance):
                     if 10 < right_distance < 40:
                         self.servo.position = 350
@@ -121,15 +117,11 @@ class SensorFollower:
                     elif right_distance < 10:
                         self.servo.position = 425
                         print('Tourne à droite')
-                        if 10 < left_distance < 40:
-                            self.servo.position = 350
                     elif right_distance > 40:
                         self.servo.position = 275
                         print('Tourne à gauche')
-                        if 10 < left_distance < 40:
-                            self.servo.position = 350
-                    time.sleep(0.1)
-                
+
+                time.sleep(0.1)
 
 
         except KeyboardInterrupt:
