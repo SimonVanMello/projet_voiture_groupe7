@@ -9,11 +9,27 @@ class Infra:
         self.infr = infr_pin
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.infr, GPIO.IN)
-        sleep(0.1)
+        self.lapNumber = 0
+        self.lineDetected = 0
 
     def getInfo(self):
         state = GPIO.input(self.infr)
         return state
+    
+    def run(self):
+        while True:
+            currentValue = self.getInfo()
+            if currentValue == 0:
+                self.lineDetected = 0
+            elif currentValue == 1:
+                self.lineDetected += 1
+
+            if self.lineDetected > 3:
+                self.lapNumber += 1
+                self.lineDetected = 0
+                sleep(5)
+            sleep(0.1)
+
 
 if __name__ == "__main__":
     infra = Infra(20)
