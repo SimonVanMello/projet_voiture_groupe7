@@ -99,13 +99,13 @@ class SensorFollower:
                 #front_distance = self.front_sensor.getDistance()
                 ## Determine which way to turn
                 print(left_distance)
-                if 10 < left_distance < 20:
+                if 20 < left_distance < 40:
                     self.servo.position = 425
                     print('Mid')
-                elif left_distance < 10:
+                elif left_distance < 20:
                     self.servo.position = 425
                     print('Tourne à droite')
-                elif left_distance > 20:
+                elif left_distance > 40:
                     self.servo.position = 275
                     print('Tourne à gauche')
                 time.sleep(0.1)
