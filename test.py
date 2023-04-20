@@ -12,5 +12,6 @@ class TestInfra(unittest.TestCase):
         result = ir.getInfo()
         self.assertEquals(1, result)
 
+
 if __name__ == '__main__':
     unittest.main()
