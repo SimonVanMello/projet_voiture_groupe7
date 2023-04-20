@@ -6,8 +6,7 @@ import time
 
 class Ultrasonic:
     def __init__(self, triggerPin: int, echoPin: int):
-        # ! change into BCM
-        GPIO.setmode(GPIO.BOARD)
+        GPIO.setmode(GPIO.BCM)
         self.GPIO_TRIGGER = triggerPin
         self.GPIO_ECHO = echoPin
         GPIO.setup(self.GPIO_TRIGGER, GPIO.OUT)
@@ -48,9 +47,9 @@ class Ultrasonic:
             GPIO.cleanup()
 
 if __name__ == "__main__":
-    leftSensor = Ultrasonic(23, 21)
-    frontSensor = Ultrasonic(31, 29)
-    rightSensor = Ultrasonic(37, 35)
+    leftSensor = Ultrasonic(11, 9) # board pins : 23 21
+    frontSensor = Ultrasonic(6, 5) # board pins : 31 29
+    rightSensor = Ultrasonic(26, 19) # board pins : 37 35
 
     for i in range(10):
         leftSensorDistance = leftSensor.getDistance()

@@ -15,7 +15,7 @@ class TestUltrasonic(unittest.TestCase):
         super().setUpClass()
 
     def test_left_mesure(self):
-        leftSensor = Ultrasonic(23,21)
+        leftSensor = Ultrasonic(11,9)
         distance = leftSensor.getDistance()
         print(f"Distance mesured: {distance}")
         # self.assertEqual(distance, 20)
@@ -28,7 +28,7 @@ class TestUltrasonic(unittest.TestCase):
         #     print("Distance erronée")
 
     def test_front_mesure(self):
-        frontSensor = Ultrasonic(31,29)
+        frontSensor = Ultrasonic(6,5)
         distance = frontSensor.getDistance()
         print(f"Distance mesured: {distance}")
         # self.assertEqual(distance, 20)
@@ -42,7 +42,7 @@ class TestUltrasonic(unittest.TestCase):
         #     print("Distance erronée")
 
     def test_right_mesure(self):
-        rightSensor = Ultrasonic(37,35)
+        rightSensor = Ultrasonic(26, 19)
         distance = rightSensor.getDistance()
         print(f"Distance mesured: {distance}")
         # self.assertEqual(distance, 20)
