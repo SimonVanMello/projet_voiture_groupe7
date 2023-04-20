@@ -126,8 +126,8 @@ class SensorFollower:
 
                 #test detect line
                 tour = infra.getInfo()
-                if(tour):
-                    self.nbr_tours ++
+                if (tour):
+                    self.nbr_tours += 1
 
 
                 ## Determine which way to turn
