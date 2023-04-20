@@ -7,7 +7,7 @@ import time
 from sensors.Ultrasonic import Ultrasonic
 from sensors.Infra import Infra
 
-class Testultrasonic(unittest.TestCase):
+class TestUltrasonic(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         # this is the expected value in cm
@@ -17,10 +17,11 @@ class Testultrasonic(unittest.TestCase):
     def test_left_mesure(self):
         leftSensor = Ultrasonic(23,21)
         distance = leftSensor.getDistance()
+        print(f"Distance mesured: {distance}")
         # self.assertEqual(distance, 20)
         borninf = self.distance - (self.distance/ 11.25)
         bornsup = self.distance + (self.distance/ 11.25)
-        self.assertTrue(borninf <= distance <= bornsup)
+        self.assertTrue(borninf <= distance <= bornsup, "left distance")
         # if borninf <= self.distance <= bornsup:
         #     print("Distance correct")
         # else:
@@ -29,10 +30,11 @@ class Testultrasonic(unittest.TestCase):
     def test_front_mesure(self):
         frontSensor = Ultrasonic(31,29)
         distance = frontSensor.getDistance()
+        print(f"Distance mesured: {distance}")
         # self.assertEqual(distance, 20)
         borninf = self.distance - (self.distance/ 11.25)
         bornsup = self.distance + (self.distance/ 11.25)
-        self.assertTrue(borninf <= distance <= bornsup)
+        self.assertTrue(borninf <= distance <= bornsup, "front distance")
         # if borninf <= self.distance <= bornsup:        
         #     print("Distance correct")
 
@@ -42,10 +44,11 @@ class Testultrasonic(unittest.TestCase):
     def test_right_mesure(self):
         rightSensor = Ultrasonic(37,35)
         distance = rightSensor.getDistance()
+        print(f"Distance mesured: {distance}")
         # self.assertEqual(distance, 20)
         borninf = self.distance - (self.distance/ 11.25)
         bornsup = self.distance + (self.distance/ 11.25)
-        self.assertTrue(borninf <= distance <= bornsup)
+        self.assertTrue(borninf <= distance <= bornsup, f"right distance: {distance}")
         # if borninf <= self.distance <= bornsup:
         #     print("Distance correct")
             
@@ -59,4 +62,4 @@ class TestInfra(unittest.TestCase):
         self.assertEquals(1, result)
 
 if __name__ == '__main__':
-    unittest.main(TestInfra())
+    unittest.main(TestUltrasonic())
