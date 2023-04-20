@@ -94,17 +94,20 @@ class SensorFollower:
         self.dc.forward()
         try:
             while True:
-                distance = self.left_sensor.getDistance()
-                print('Distance en centimètre:', distance, 'cm')
-                if 10 < distance < 20:
+                left_distance = self.left_sensor.getDistance()
+                right_distance = self.right_sensor.getDistance()
+                front-distance = self.front_sensor.getDistance()
+                #print('Distance en centimètre:', distance, 'cm')
+                ## Determine which way to turn
+                if 10 < left_distance < 20:
                     self.servo.positionMid()
                     print('Mid')
                     time.sleep(0.1)
-                elif distance < 10:
+                elif left_distance < 10:
                     self.servo.positionMax()
                     print('Tourne à droite')
                     time.sleep(0.1)
-                elif distance > 20:
+                elif left_distance > 20:
                     self.servo.positionMin()
                     print('Tourne à gauche')
                     time.sleep(0.1)
