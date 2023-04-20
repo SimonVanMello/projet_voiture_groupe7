@@ -82,9 +82,9 @@ class Circle:
 
 class SensorFollower:
     def __init__(self):
-        self.left_sensor = Ultrasonic(23, 21)
-        self.front_sensor = Ultrasonic(31, 29)
-        self.right_sensor = Ultrasonic(37, 35)
+        self.left_sensor = Ultrasonic(11, 9)
+        self.front_sensor = Ultrasonic(6, 5)
+        self.right_sensor = Ultrasonic(26, 19)
         self.servo = SensorAndMotor()
         self.dc = Dc()
 
@@ -96,7 +96,7 @@ class SensorFollower:
             while True:
                 left_distance = self.left_sensor.getDistance()
                 right_distance = self.right_sensor.getDistance()
-                front-distance = self.front_sensor.getDistance()
+                front_distance = self.front_sensor.getDistance()
                 #print('Distance en centimètre:', distance, 'cm')
                 ## Determine which way to turn
                 if 10 < left_distance < 20:
