@@ -4,6 +4,7 @@
 from motors.Dc import Dc
 from motors.Servo import SensorAndMotor
 from sensors.Ultrasonic import Ultrasonic
+from sensors.Infra import Infra
 import time
 import RPi.GPIO as GPIO
 
@@ -87,6 +88,8 @@ class SensorFollower:
         self.right_sensor = Ultrasonic(26, 19)
         self.servo = SensorAndMotor()
         self.dc = Dc()
+        self.infra = Infra(20)
+        self.nbr_tours = 0
 
     def getPositionFromDistance(self, prox_wall: str, distance: float) -> int:
         print(f"proxWall: {prox_wall} - distance: {distance}")
@@ -112,12 +115,20 @@ class SensorFollower:
         self.dc.setSpeed(30)
         self.dc.forward()
         self.prox_wall=''
+
+        
         try:
-            while True:
+            while nbr_tours <= 2:
                 left_distance = self.left_sensor.getDistance()
                 right_distance = self.right_sensor.getDistance()
                 front_distance = self.front_sensor.getDistance()
                 print(f"front distance: {front_distance}")
+
+                #test detect line
+                tour = infra.getInfo()
+                if(tour):
+                    self.nbr_tours ++
+
 
                 ## Determine which way to turn
                 print(left_distance)
@@ -156,6 +167,8 @@ class SensorFollower:
                         self.servo.position = 350
                         print('Tourne à gauche')
                         time.sleep(0.1)
+
+            stop()            
 
 
         except KeyboardInterrupt:

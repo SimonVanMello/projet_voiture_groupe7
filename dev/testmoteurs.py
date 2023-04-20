@@ -3,11 +3,11 @@ import time
 import unittest
 
 class moteurs(unittest.TestCase):
-    def testAvant(self):
+    def testArriere(self):
         print("Activation des moteurs")
         time.sleep(1.5)
 
-        GPIO.setup(GPIO.BCM)
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(17, GPIO.OUT)
         GPIO.setup(27, GPIO.OUT)
 
@@ -28,12 +28,12 @@ class moteurs(unittest.TestCase):
         time.sleep(2)
         GPIO.cleanup()
 
-    def testArriere(self):
+    def testAvant(self):
 
         print("Activation des moteurs")
         time.sleep(1.5)
 
-        GPIO.setup(GPIO.BCM)
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(18, GPIO.OUT)
         GPIO.setup(22, GPIO.OUT)
 
