@@ -7,6 +7,7 @@ from sensors.Ultrasonic import Ultrasonic
 from sensors.Infra import Infra
 import time
 import RPi.GPIO as GPIO
+import threading
 
 class Circle:
     def circleRight(self):
@@ -89,91 +90,129 @@ class SensorFollower:
         self.servo = SensorAndMotor()
         self.dc = Dc()
         self.infra = Infra(20)
-        self.nbr_tours = 0
 
     def getPositionFromDistance(self, prox_wall: str, distance: float) -> int:
         print(f"proxWall: {prox_wall} - distance: {distance}")
         if prox_wall == "right":
             # turn left
-            if distance < 10:
-                return 325
-            elif distance < 20:
-                return 350
-            elif distance <= 30:
-                return 360
+            # if distance < 10:
+            return 340
+            # elif distance < 20:
+            #     return 350
+            # elif distance <= 30:
+            #     return 360
         elif prox_wall == "left":
             # turn right
-            if distance < 10:
-                return 525
-            elif distance < 20:
-                return 500
-            elif distance <= 30:
-                return 490
+            # if distance < 10:
+            return 500
+            # elif distance < 20:
+            #     return 500
+            # elif distance <= 30:
+            #     return 490
 
     def follow_sensor(self):
         self.dc.setup()
         self.dc.setSpeed(30)
         self.dc.forward()
         self.prox_wall=''
-
-        
+        threadInfra = threading.Thread(target=self.infra.run)
+        threadInfra.start()
         try:
-            while nbr_tours <= 2:
+            while self.infra.lapNumber <= 2:
                 left_distance = self.left_sensor.getDistance()
                 right_distance = self.right_sensor.getDistance()
                 front_distance = self.front_sensor.getDistance()
                 print(f"front distance: {front_distance}")
 
-                #test detect line
-                tour = infra.getInfo()
-                if (tour):
-                    self.nbr_tours += 1
+                if left_distance < right_distance:
+                    self.prox_wall = "left"
+                else:
+                    self.prox_wall = "right"
 
-
-                ## Determine which way to turn
-                print(left_distance)
-                if front_distance < 30:
+                # Determine which way to turn
+                print(f"left_distance: {left_distance} - right_distance: {right_distance}")
+                if front_distance < 20:
                     print(f"detected an obstacle at {front_distance}cm")
                     self.servo.position = self.getPositionFromDistance(self.prox_wall, front_distance)
-                    # if self.prox_wall == 'left':
-                    #     print("turning right")
-                    #     self.servo.position = 500 #turn right
-                    # elif self.prox_wall == 'right':
-                    #     print("turning left")
-                    #     self.servo.position = 350  #turn left
+                    time.sleep(1)
+                    self.servo.position = 410
 
-                elif (left_distance <= right_distance):
-                    self.prox_wall='left'
-                    if 20 < left_distance < 40:
-                        self.servo.position = 400
-                        print('Mid')
-                    elif left_distance < 20:
-
+                elif left_distance < right_distance:
+                    if left_distance < 20:
                         self.servo.position = 500
                         print('Tourne à droite')
-                    elif left_distance > 40:
-                        self.servo.position = 350
-                        print('Tourne à gauche')
-
-                elif (right_distance < left_distance):
-                    self.prox_wall='right'
-                    if 20 < right_distance < 40:
-                        self.servo.position = 400
+                    else:
+                        self.servo.position = 410
                         print('Mid')
-                    elif right_distance < 20:
-                        self.servo.position = 500
-                        print('Tourne à droite')
-                    elif right_distance > 40:
-                        self.servo.position = 350
+
+                elif left_distance > right_distance:
+                    if right_distance < 20:
+                        self.servo.position = 340
                         print('Tourne à gauche')
-                        time.sleep(0.1)
-
-            stop()            
-
-
+                    else:
+                        self.servo.position = 410
+                        print('Mid')
+                time.sleep(0.1)
+            self.dc.stop()
+            GPIO.cleanup()
         except KeyboardInterrupt:
             self.dc.stop()
             GPIO.cleanup()
 
-sensorFollower = SensorFollower()
-sensorFollower.follow_sensor()
+class FollowWall:
+    def __init__(self):
+        self.left_sensor = Ultrasonic(11, 9)
+        self.right_sensor = Ultrasonic(26, 19)
+        self.servo = SensorAndMotor()
+        self.dc = Dc()
+
+    def followWall(self):
+        self.dc.setup()
+        self.dc.setSpeed(30)
+        self.dc.forward()
+        
+        try:
+            while True:
+                left_distance = self.left_sensor.getDistance()
+                right_distance = self.right_sensor.getDistance()
+
+                
+                if left_distance < right_distance:
+                    if 20 < left_distance < 40:
+                        self.servo.position = 410
+                        print('Mid')
+                    elif left_distance < 20:
+                        self.servo.position = 480
+                        print('Tourne à droite')
+                    elif left_distance > 40:
+                        self.servo.position = 360
+                        print('Tourne à gauche')
+
+                elif right_distance <= left_distance:
+                    if 20 < right_distance < 40:
+                        self.servo.position = 410
+                        print('Mid')
+                    elif right_distance < 20:
+                        self.servo.position = 360
+                        print('Tourne à droite')
+                    elif right_distance > 40:
+                        self.servo.position = 480
+                        print('Tourne à gauche')
+                time.sleep(0.01)
+            self.dc.stop()
+            GPIO.cleanup()
+        except KeyboardInterrupt:
+            self.dc.stop()
+            GPIO.cleanup()
+
+
+
+print("1: course\n2: wall follower")
+choice = input("> ")
+
+if choice == "1":
+    sensorFollower = SensorFollower()
+    sensorFollower.follow_sensor()
+elif choice == "2":
+    wallFollower = FollowWall()
+    wallFollower.followWall()
