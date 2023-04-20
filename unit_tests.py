@@ -4,7 +4,8 @@
 import RPi.GPIO as GPIO
 import unittest
 import time
-from sensors.Ultrasonic import *
+from sensors.Ultrasonic import Ultrasonic
+from sensors.Infra import Infra
 
 class Testultrasonic(unittest.TestCase):
     @classmethod
@@ -58,4 +59,4 @@ class TestInfra(unittest.TestCase):
         self.assertEquals(1, result)
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(TestInfra())

@@ -15,8 +15,8 @@ class Servo:
         self.__pwm = p.PWM()
         self.__pwm.frequency = 50
         self.__position  = 225
-        self.__SERVO_MIN = 150
-        self.__SERVO_MAX = 400
+        self.__SERVO_MIN = 250
+        self.__SERVO_MAX = 450
 
     # getter function using property decorator
     @property
