@@ -44,24 +44,18 @@ while True:
 
 '''
 
-#autre possibilité
-
-'''
+''' EN COURS
 
 import board
-import busio
 import adafruit_tcs34725
+i2c = board.I2C()
+sensor = adafruit_tcs34725.TCS34725(i2c)
 
-# Initialise la connexion I2C
-i2c = busio.I2C(board.SCL, board.SDA)
 
-# Initialise le capteur TCS34725
-tcs = adafruit_tcs34725.TCS34725(i2c)
 
-# Lecture des valeurs de lumière
-while True:
-    r, g, b, c = tcs.color_raw
-    print('R: {0}, G: {1}, B: {2}, C: {3}'.format(r, g, b, c))
 
+print('Color: ({0}, {1}, {2})'.format(*sensor.color_rgb_bytes))
+print('Temperature: {0}K'.format(sensor.color_temperature))
+print('Lux: {0}'.format(sensor.lux))
 
 '''
