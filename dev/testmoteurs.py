@@ -7,7 +7,7 @@ class moteurs(unittest.TestCase):
         print("Activation des moteurs")
         time.sleep(1.5)
 
-        GPIO.setup(GPIO.BCM)
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(17, GPIO.OUT)
         GPIO.setup(27, GPIO.OUT)
 
@@ -33,7 +33,7 @@ class moteurs(unittest.TestCase):
         print("Activation des moteurs")
         time.sleep(1.5)
 
-        GPIO.setup(GPIO.BCM)
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(18, GPIO.OUT)
         GPIO.setup(22, GPIO.OUT)
 
