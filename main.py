@@ -88,6 +88,25 @@ class SensorFollower:
         self.servo = SensorAndMotor()
         self.dc = Dc()
 
+    def getPositionFromDistance(self, prox_wall: str, distance: float) -> int:
+        print(f"proxWall: {prox_wall} - distance: {distance}")
+        if prox_wall == "right":
+            # turn left
+            if distance < 10:
+                return 325
+            elif distance < 20:
+                return 350
+            elif distance <= 30:
+                return 360
+        elif prox_wall == "left":
+            # turn right
+            if distance < 10:
+                return 525
+            elif distance < 20:
+                return 500
+            elif distance <= 30:
+                return 490
+
     def follow_sensor(self):
         self.dc.setup()
         self.dc.setSpeed(30)
@@ -104,14 +123,15 @@ class SensorFollower:
                 print(left_distance)
                 if front_distance < 30:
                     print(f"detected an obstacle at {front_distance}cm")
-                    if self.prox_wall == 'left':
-                        print("turning right")
-                        self.servo.position = 500 #turn right
-                    elif self.prox_wall == 'right':
-                        print("turning left")
-                        self.servo.position =350  #turn left
+                    self.servo.position = self.getPositionFromDistance(self.prox_wall, front_distance)
+                    # if self.prox_wall == 'left':
+                    #     print("turning right")
+                    #     self.servo.position = 500 #turn right
+                    # elif self.prox_wall == 'right':
+                    #     print("turning left")
+                    #     self.servo.position = 350  #turn left
 
-                elif(left_distance < right_distance):
+                elif (left_distance <= right_distance):
                     self.prox_wall='left'
                     if 20 < left_distance < 40:
                         self.servo.position = 400
@@ -124,8 +144,8 @@ class SensorFollower:
                         self.servo.position = 350
                         print('Tourne à gauche')
 
-                elif(right_distance < left_distance):
-                    self.prox_wall='righ'
+                elif (right_distance < left_distance):
+                    self.prox_wall='right'
                     if 20 < right_distance < 40:
                         self.servo.position = 400
                         print('Mid')
