@@ -46,27 +46,6 @@ class Circle:
             print(e)
             dc.stop()
 
-    def smoothCircle(self):
-        servo = SensorAndMotor()
-        changePosition(servo, 275, 0.01)
-        dc = Dc()
-        dc.setup()
-        dc.setSpeed(50)
-        dc.forward()
-        time.sleep(4.7)
-        changePosition(servo, 425, 0.01)
-        time.sleep(5)
-        dc.stop()
-        del servo
-        del dc
-        GPIO.cleanup()
-
-    def changePosition(self, servo: SensorAndMotor, newPos: int, delay: float):
-        oldPosition = servo.position
-        for i in range(oldPosition, newPos+1):
-            servo.position = i
-            time.sleep(delay)
-
     def run(self):
         self.circleRight()
         time.sleep(1)
@@ -78,9 +57,7 @@ class Circle:
         servo = SensorAndMotor()
         servo.position = 350
 
-#circle = Circle()
-#circle.run()
-#circle.smoothCircle()
+
 
 class SensorFollower:
     def __init__(self):
@@ -114,7 +91,7 @@ class SensorFollower:
         self.dc.setup()
         self.dc.setSpeed(30)
         self.dc.forward()
-        self.prox_wall=''
+        self.prox_wall = ''
         threadInfra = threading.Thread(target=self.infra.run)
         threadInfra.start()
         try:
@@ -206,8 +183,7 @@ class FollowWall:
             GPIO.cleanup()
 
 
-
-print("1: course\n2: wall follower")
+print("1: main\n2: wall follower\n3: circle")
 choice = input("> ")
 
 if choice == "1":
@@ -216,3 +192,6 @@ if choice == "1":
 elif choice == "2":
     wallFollower = FollowWall()
     wallFollower.followWall()
+elif choice == "3":
+    circle = Circle()
+    circle.run()
