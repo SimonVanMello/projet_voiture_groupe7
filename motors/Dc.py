@@ -24,10 +24,10 @@ class Dc:
         self.pins = [self.Motor0_A, self.Motor0_B, self.Motor1_A, self.Motor1_B]
 
     def setSpeed(self, speed):
-        speed *= 40
-        print ('speed is: ', speed)
-        self.pwm.write(self.EN_M0, 0, speed)
-        self.pwm.write(self.EN_M1, 0, speed)
+        self.speed = speed*40
+        print ('speed is: ', self.speed)
+        self.pwm.write(self.EN_M0, 0, self.speed)
+        self.pwm.write(self.EN_M1, 0, self.speed)
 
     def setup(self, busnum=None):
         # global forward0, forward1, backward1, backward0

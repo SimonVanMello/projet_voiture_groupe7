@@ -58,7 +58,7 @@ class Circle:
         del servo
         del dc
         GPIO.cleanup()
-        
+
     def changePosition(self, servo: SensorAndMotor, newPos: int, delay: float):
         oldPosition = servo.position
         for i in range(oldPosition, newPos+1):
@@ -92,26 +92,52 @@ class SensorFollower:
         self.dc.setup()
         self.dc.setSpeed(30)
         self.dc.forward()
+        self.prox_wall=''
         try:
             while True:
                 left_distance = self.left_sensor.getDistance()
                 right_distance = self.right_sensor.getDistance()
                 front_distance = self.front_sensor.getDistance()
-                #print('Distance en centimètre:', distance, 'cm')
+                print(f"front distance: {front_distance}")
+
                 ## Determine which way to turn
-                if 10 < left_distance < 20:
-                    self.servo.positionMid()
-                    print('Mid')
-                    time.sleep(0.1)
-                elif left_distance < 10:
-                    self.servo.positionMax()
-                    print('Tourne à droite')
-                    time.sleep(0.1)
-                elif left_distance > 20:
-                    self.servo.positionMin()
-                    print('Tourne à gauche')
-                    time.sleep(0.1)
-                time.sleep(0.1)
+                print(left_distance)
+                if front_distance < 30:
+                    print(f"detected an obstacle at {front_distance}cm")
+                    if self.prox_wall == 'left':
+                        print("turning right")
+                        self.servo.position = 500 #turn right
+                    elif self.prox_wall == 'right':
+                        print("turning left")
+                        self.servo.position =350  #turn left
+
+                elif(left_distance < right_distance):
+                    self.prox_wall='left'
+                    if 20 < left_distance < 40:
+                        self.servo.position = 400
+                        print('Mid')
+                    elif left_distance < 20:
+
+                        self.servo.position = 500
+                        print('Tourne à droite')
+                    elif left_distance > 40:
+                        self.servo.position = 350
+                        print('Tourne à gauche')
+
+                elif(right_distance < left_distance):
+                    self.prox_wall='righ'
+                    if 20 < right_distance < 40:
+                        self.servo.position = 400
+                        print('Mid')
+                    elif right_distance < 20:
+                        self.servo.position = 500
+                        print('Tourne à droite')
+                    elif right_distance > 40:
+                        self.servo.position = 350
+                        print('Tourne à gauche')
+                        time.sleep(0.1)
+
+
         except KeyboardInterrupt:
             self.dc.stop()
             GPIO.cleanup()

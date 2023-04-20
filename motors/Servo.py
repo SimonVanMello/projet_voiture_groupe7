@@ -16,7 +16,7 @@ class Servo:
         self.__pwm.frequency = 50
         self.__position  = 225
         self.__SERVO_MIN = 250
-        self.__SERVO_MAX = 450
+        self.__SERVO_MAX = 525
 
     # getter function using property decorator
     @property
@@ -100,9 +100,9 @@ if __name__ == "__main__":
     sensorMotor = SensorAndMotor()
     # test the servo motor in 10 random positions
     for i in range(10):
-        pos = randint(150, 400)
+        pos = randint(275, 450)
         print(f"Position: {pos}, current: {sensorMotor.currentSensor.checkCurrent()}mA")
         sensorMotor.position = pos
         time.sleep(2)
     # reset position
-    sensorMotor.position = 225
+    sensorMotor.position = 350

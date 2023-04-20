@@ -15,5 +15,6 @@ del dc
 servo = SensorAndMotor()
 servo.position = 350
 del servo
-
+time.sleep(1)
 GPIO.cleanup()
+print("stopped")
