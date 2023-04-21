@@ -78,6 +78,9 @@ class Circuit:
         self.left = 350
         self.right = 490
 
+        # reset servo position
+        self.servo.position = self.center
+
         threadInfra = threading.Thread(target=self.infra.run)
         threadInfra.start()
 
@@ -138,6 +141,7 @@ class FollowWall:
         self.left_sensor = Ultrasonic(11, 9)
         self.right_sensor = Ultrasonic(26, 19)
         self.servo = SensorAndMotor()
+        self.servo.position = 410
         self.dc = Dc()
 
     def followWall(self):
