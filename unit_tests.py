@@ -6,7 +6,9 @@ import unittest
 import time
 from sensors.Ultrasonic import Ultrasonic
 from sensors.Infra import Infra
+from sensors.Rgb import Rgb
 from motors.Servo import SensorAndMotor
+from motors.Dc import Dc
 
 class TestUltrasonic(unittest.TestCase):
     @classmethod
@@ -99,8 +101,37 @@ class TestSensorAndMotor(unittest.TestCase):
         self.sensorMotor.positionMax()
         self.assertEqual(self.sensorMotor.position, 425)
 
+class Testmoteurs(unittest.TestCase):
+    def setUp(self):
+        self.dcmotor = Dc()
+        self.dcmotor.setup()
+
+    def testSetSpeedForward(self):
+        self.dcmotor.forward()
+        self.dcmotor.setSpeed(30)
+        self.assertEqual(self.dcmotor.speed, 30*40)
+        time.sleep(2)
+        self.dcmotor.stop()
+    
+    def testSetSpeedBackward(self):
+        self.dcmotor.backward()
+        self.dcmotor.setSpeed(30)
+        self.assertEqual(self.dcmotor.speed, 30*40)
+        time.sleep(2)
+        self.dcmotor.stop()
+
+class TestRgb(unittest.TestCase):
+    def setUp(self):
+        self.rgb = Rgb()
+    
+    def testGreen(self):
+        self.assertTrue(self.rgb.getGreen() > self.rgb.getRed(), "plus de vert que de rouge ?")
+    
+    def testRed(self):
+        self.assertTrue(self.rgb.getGreen() < self.rgb.getRed(), "+ de rouge que de vert ?")
+
 if __name__ == '__main__':
-    print("1: ultrasonic\n2: infrared\n3: servo")
+    print("0: exit\n1: ultrasonic\n2: infrared\n3: servo\n4: dc motor\n5: rgb")
     inp = input("> ")
     if inp == "1":
         unittest.main(TestUltrasonic())
@@ -108,5 +139,9 @@ if __name__ == '__main__':
         unittest.main(TestInfra())
     elif inp == "3":
         unittest.main(TestSensorAndMotor())
+    elif inp == "4":
+        unittest.main(Testmoteurs())
+    elif inp == "5":
+        unittest.main(TestRgb())
     else:
         print("Error")

@@ -61,7 +61,7 @@ class Circle:
 
 
 class Circuit:
-    def __init__(self, maxLapNumber: int, rgb=False):
+    def __init__(self, maxLapNumber: int, doRgb=False):
         self.left_sensor = Ultrasonic(11, 9)
         self.front_sensor = Ultrasonic(6, 5)
         self.right_sensor = Ultrasonic(26, 19)
@@ -69,11 +69,11 @@ class Circuit:
         self.dc = Dc()
         self.infra = Infra(20)
         self.maxLapNumber = maxLapNumber
+        self.doRgb = doRgb
 
     def run(self):
         self.dc.setup()
         self.dc.setSpeed(30)
-        self.dc.forward()
         # servo positions
         self.center = 410
         self.lightLeft = 350
@@ -88,14 +88,20 @@ class Circuit:
         threadInfra.start()
 
         try:
-            if self.rgb:
+            if self.doRgb:
                 rgb = Rgb()
                 haveToWait = True
                 while haveToWait:
-                    if rgb.getGreen() > rgb.getRed():
-                        haveToWait = False
-                time.sleep(1)
+                    green = rgb.getGreen()
+                    red = rgb.getRed()
+                    print(f"red: {red} - green {green}")
+                    if green > red and green > 30:
+                        print("green>red")
+                        if (red - green) > 10:
+                            haveToWait = False
+                    time.sleep(1)
 
+            self.dc.forward()
             while self.infra.lapNumber <= self.maxLapNumber:
                 front_distance = self.front_sensor.getDistance()
                 print(f"front distance: {front_distance}cm")
@@ -205,7 +211,7 @@ class FollowWall:
             GPIO.cleanup()
 
 
-print("1: circuit\n2: wall follower\n3: circle")
+print("0: exit\n1: circuit\n2: wall follower\n3: circle")
 choice = input("> ")
 
 if choice == "1":

@@ -16,11 +16,11 @@ class Rgb:
 
     def getGreen(self):
         self.getColors()
-        return self.green
+        return int(self.green)
 
     def getRed(self):
         self.getColors()
-        return self.red
+        return int(self.red)
 
 if __name__  == "__main__":
     rgb = Rgb()
