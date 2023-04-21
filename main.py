@@ -71,13 +71,13 @@ class Circuit:
 
     def run(self):
         self.dc.setup()
-        self.dc.setSpeed(35)
+        self.dc.setSpeed(30)
         self.dc.forward()
         # servo positions
         self.center = 410
         self.lightLeft = 350
-        self.lightRight = 490
-        self.heavyLeft = 330
+        self.lightRight = 480
+        self.heavyLeft = 320
         self.heavyRight = 510
 
         # reset servo position
@@ -93,6 +93,17 @@ class Circuit:
 
                 # priority to the front sensor
                 if front_distance < 20:
+                    # if front_distance < 5:
+                    #     self.dc.stop()
+                    #     self.dc.setSpeed(40)
+                    #     self.servo.position = self.center
+                    #     self.dc.backward()
+                    #     time.sleep(1.5)
+                    #     self.dc.stop()
+                    #     self.servo.position = self.heavyLeft
+                    #     time.sleep(0.1)
+                    #     self.dc.forward()
+
                     print(f"detected an obstacle at {front_distance}cm")
                     # slow down the car
                     self.dc.setSpeed(20)
@@ -106,7 +117,7 @@ class Circuit:
                         print("Turning left")
                 else:
                     # return to normal speed
-                    self.dc.setSpeed(35)
+                    self.dc.setSpeed(30)
                     left_distance = self.left_sensor.getDistance()
                     right_distance = self.right_sensor.getDistance()
                     print(f"left distance: {left_distance}cm - right distance: {right_distance}cm")
@@ -150,13 +161,13 @@ class FollowWall:
         self.dc.setup()
         self.dc.setSpeed(30)
         self.dc.forward()
-        
+
         try:
             while True:
                 left_distance = self.left_sensor.getDistance()
                 right_distance = self.right_sensor.getDistance()
 
-                
+
                 if left_distance < right_distance:
                     if 20 < left_distance < 40:
                         self.servo.position = 410
