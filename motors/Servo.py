@@ -84,12 +84,15 @@ class SensorAndMotor:
             # self.detectCriticalCurrent(500) # 500 mA is the threshold value
 
     def positionMid(self):
+        self.__position = 350
         self.servoMotor.position = 350
 
     def positionMin(self):
+        self.__position = 275
         self.servoMotor.position = 275
 
     def positionMax(self):
+        self.__position = 425
         self.servoMotor.position = 425
 
     def detectCriticalCurrent(self, threshold):
