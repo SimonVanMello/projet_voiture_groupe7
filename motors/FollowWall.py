@@ -23,9 +23,6 @@ def tourner():
     backward()
     sleep(0.9)
         
-
-
-
 # ===========================================================================
 # Raspberry Pi pin11, 12, 13 and 15 to realize the clockwise/counterclockwise
 # rotation and forward and backward movements

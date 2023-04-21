@@ -5,7 +5,7 @@ import RPi.GPIO as GPIO
 from time import sleep
 
 class Infra:
-    def __init__(self, infr_pin):
+    def __init__(self, infr_pin: int):
         self.infr = infr_pin
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.infr, GPIO.IN)

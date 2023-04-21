@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 #coding: utf-8
 
-import board
 import adafruit_tcs34725
+import board
 
 class Rgb:
     def __init__(self):

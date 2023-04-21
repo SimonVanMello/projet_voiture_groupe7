@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 #coding: utf-8
 
-import PCA9685 as p
 import adafruit_ina219
 import board
 import busio
-import RPi.GPIO as GPIO
-import time
-import threading
+import PCA9685 as p
 from random import randint
+import RPi.GPIO as GPIO
+import threading
+import time
 
 class Servo:
     def __init__(self):

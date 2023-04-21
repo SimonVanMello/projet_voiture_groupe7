@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 #coding: utf-8
 
-import RPi.GPIO as GPIO
 import PCA9685 as p
+import RPi.GPIO as GPIO
 import time
 
 class Dc:
@@ -23,7 +23,7 @@ class Dc:
         self.EN_M1    = 5  # servo driver IC CH5
         self.pins = [self.Motor0_A, self.Motor0_B, self.Motor1_A, self.Motor1_B]
 
-    def setSpeed(self, speed):
+    def setSpeed(self, speed: int):
         self.speed = speed*40
         print ('speed is: ', self.speed)
         self.pwm.write(self.EN_M0, 0, self.speed)
@@ -54,7 +54,7 @@ class Dc:
         for pin in self.pins:
             GPIO.setup(pin, GPIO.OUT)
         
-    def motor0(self, x):
+    def motor0(self, x: str):
         if x == 'True':
             GPIO.output(self.Motor0_A, GPIO.LOW)
             GPIO.output(self.Motor0_B, GPIO.HIGH)
@@ -64,7 +64,7 @@ class Dc:
         else:
             print('Config Error')
 
-    def motor1(self, x):
+    def motor1(self, x: str):
         if x == 'True':
             GPIO.output(self.Motor1_A, GPIO.LOW)
             GPIO.output(self.Motor1_B, GPIO.HIGH)
@@ -94,7 +94,7 @@ class Dc:
         for pin in self.pins:
             GPIO.output(pin, GPIO.LOW)
 
-    def ctrl(self, status, direction=1):
+    def ctrl(self, status: int, direction=1):
         if status == 1:   # Run
             if direction == 1:     # Forward
                 self.forward()

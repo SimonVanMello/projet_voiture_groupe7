@@ -1,62 +1,42 @@
 #!/usr/bin/env python3
 #coding: utf-8
 
-import RPi.GPIO as GPIO
-import unittest
-import time
-from sensors.Ultrasonic import Ultrasonic
-from sensors.Infra import Infra
-from sensors.Rgb import Rgb
-from motors.Servo import SensorAndMotor
 from motors.Dc import Dc
+from motors.Servo import SensorAndMotor
+import RPi.GPIO as GPIO
+from sensors.Infra import Infra
+from sensors.Ultrasonic import Ultrasonic
+from sensors.Rgb import Rgb
+import time
+import unittest
 
 class TestUltrasonic(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         # this is the expected value in cm
         self.distance = 14
+        self.borninf = self.distance - (self.distance/11.25)
+        self.bornsup = self.distance + (self.distance/11.25)
         super().setUpClass()
 
     def test_left_mesure(self):
         leftSensor = Ultrasonic(11,9)
         distance = leftSensor.getDistance()
         print(f"Distance mesured: {distance}")
-        # self.assertEqual(distance, 20)
-        borninf = self.distance - (self.distance/ 11.25)
-        bornsup = self.distance + (self.distance/ 11.25)
-        self.assertTrue(borninf <= distance <= bornsup, f"left distance: {distance}")
-        # if borninf <= self.distance <= bornsup:
-        #     print("Distance correct")
-        # else:
-        #     print("Distance erronée")
+        self.assertTrue(self.borninf <= distance <= self.bornsup, f"left distance: {distance}")
 
     def test_front_mesure(self):
         frontSensor = Ultrasonic(6,5)
         distance = frontSensor.getDistance()
         print(f"Distance mesured: {distance}")
-        # self.assertEqual(distance, 20)
-        borninf = self.distance - (self.distance/ 11.25)
-        bornsup = self.distance + (self.distance/ 11.25)
-        self.assertTrue(borninf <= distance <= bornsup, f"front distance: {distance}")
-        # if borninf <= self.distance <= bornsup:        
-        #     print("Distance correct")
-
-        # else:
-        #     print("Distance erronée")
+        self.assertTrue(self.borninf <= distance <= self.bornsup, f"front distance: {distance}")
 
     def test_right_mesure(self):
         rightSensor = Ultrasonic(26, 19)
         distance = rightSensor.getDistance()
         print(f"Distance mesured: {distance}")
-        # self.assertEqual(distance, 20)
-        borninf = self.distance - (self.distance/ 11.25)
-        bornsup = self.distance + (self.distance/ 11.25)
-        self.assertTrue(borninf <= distance <= bornsup, f"right distance: {distance}")
-        # if borninf <= self.distance <= bornsup:
-        #     print("Distance correct")
-            
-        # else:
-        #     print("Distance erronée")
+        self.assertTrue(self.borninf <= distance <= self.bornsup, f"right distance: {distance}")
+        
 
 class TestInfra(unittest.TestCase):
     def test_infra(self):
@@ -66,21 +46,13 @@ class TestInfra(unittest.TestCase):
 
 
 class TestSensorAndMotor(unittest.TestCase):
-
     def setUp(self):
         self.sensorMotor = SensorAndMotor()
 
     def test_position(self):
-        # test that initial position is 225
-        # self.assertEqual(self.sensorMotor.position, 225)
-
         # test that setting position to a valid value works
         self.sensorMotor.position = 275
         self.assertEqual(self.sensorMotor.position, 275)
-
-        # test that setting position to an invalid value doesn't change position
-        # self.sensorMotor.position = 100
-        # self.assertEqual(self.sensorMotor.position, 275)
 
     def test_wrong_position(self):
         self.sensorMotor.position = 100
@@ -101,6 +73,7 @@ class TestSensorAndMotor(unittest.TestCase):
         self.sensorMotor.positionMax()
         self.assertEqual(self.sensorMotor.position, 425)
 
+
 class Testmoteurs(unittest.TestCase):
     def setUp(self):
         self.dcmotor = Dc()
@@ -120,6 +93,7 @@ class Testmoteurs(unittest.TestCase):
         time.sleep(2)
         self.dcmotor.stop()
 
+
 class TestRgb(unittest.TestCase):
     def setUp(self):
         self.rgb = Rgb()
@@ -129,6 +103,7 @@ class TestRgb(unittest.TestCase):
     
     def testRed(self):
         self.assertTrue(self.rgb.getGreen() < self.rgb.getRed(), "+ de rouge que de vert ?")
+
 
 if __name__ == '__main__':
     print("0: exit\n1: ultrasonic\n2: infrared\n3: servo\n4: dc motor\n5: rgb")
@@ -143,5 +118,3 @@ if __name__ == '__main__':
         unittest.main(Testmoteurs())
     elif inp == "5":
         unittest.main(TestRgb())
-    else:
-        print("Error")

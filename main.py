@@ -3,12 +3,12 @@
 
 from motors.Dc import Dc
 from motors.Servo import SensorAndMotor
-from sensors.Ultrasonic import Ultrasonic
+import RPi.GPIO as GPIO
 from sensors.Infra import Infra
 from sensors.Rgb import Rgb
-import time
-import RPi.GPIO as GPIO
+from sensors.Ultrasonic import Ultrasonic
 import threading
+import time
 
 class Circle:
     def circleRight(self):
