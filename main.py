@@ -19,7 +19,7 @@ class Circle:
             dc.setup()
             dc.setSpeed(50)
             dc.forward()
-            time.sleep(5)
+            time.sleep(4.2)
             dc.stop()
             del servo
             del dc
@@ -37,7 +37,7 @@ class Circle:
             dc.setup()
             dc.setSpeed(50)
             dc.forward()
-            time.sleep(4.7)
+            time.sleep(4.4)
             dc.stop()
             del servo
             del dc
@@ -75,8 +75,10 @@ class Circuit:
         self.dc.forward()
         # servo positions
         self.center = 410
-        self.left = 350
-        self.right = 490
+        self.lightLeft = 350
+        self.lightRight = 490
+        self.heavyLeft = 330
+        self.heavyRight = 510
 
         # reset servo position
         self.servo.position = self.center
@@ -97,10 +99,10 @@ class Circuit:
 
                     # turn in the opposite direction of the nearest wall
                     if self.left_sensor.getDistance() < self.right_sensor.getDistance():
-                        self.servo.position = self.right
+                        self.servo.position = self.heavyRight
                         print("Turning right")
                     else:
-                        self.servo.position = self.left
+                        self.servo.position = self.heavyLeft
                         print("Turning left")
                 else:
                     # return to normal speed
@@ -111,7 +113,7 @@ class Circuit:
 
                     if left_distance < right_distance:
                         if left_distance < 20:
-                            self.servo.position = self.right
+                            self.servo.position = self.lightRight
                             print('Turning right\n')
                         else:
                             self.servo.position = self.center
@@ -119,7 +121,7 @@ class Circuit:
 
                     elif left_distance > right_distance:
                         if right_distance < 20:
-                            self.servo.position = self.left
+                            self.servo.position = self.lightLeft
                             print('Turning left\n')
                         else:
                             self.servo.position = self.center
