@@ -60,13 +60,14 @@ class Circle:
 
 
 class Circuit:
-    def __init__(self):
+    def __init__(self, maxLapNumber: int):
         self.left_sensor = Ultrasonic(11, 9)
         self.front_sensor = Ultrasonic(6, 5)
         self.right_sensor = Ultrasonic(26, 19)
         self.servo = SensorAndMotor()
         self.dc = Dc()
         self.infra = Infra(20)
+        self.maxLapNumber = maxLapNumber
 
     def run(self):
         self.dc.setup()
@@ -81,7 +82,7 @@ class Circuit:
         threadInfra.start()
 
         try:
-            while self.infra.lapNumber <= 2:
+            while self.infra.lapNumber <= self.maxLapNumber:
                 front_distance = self.front_sensor.getDistance()
                 print(f"front distance: {front_distance}cm")
 
@@ -179,15 +180,20 @@ class FollowWall:
             GPIO.cleanup()
 
 
-print("1: main\n2: wall follower\n3: circle")
+print("1: circuit\n2: wall follower\n3: circle")
 choice = input("> ")
 
 if choice == "1":
-    circuit = Circuit()
+    lapNumber = input("Nombre de tours (default=2): ")
+    if lapNumber == "":
+        lapNumber = 2
+    circuit = Circuit(int(lapNumber))
     circuit.run()
+
 elif choice == "2":
     wallFollower = FollowWall()
     wallFollower.followWall()
+
 elif choice == "3":
     circle = Circle()
     circle.run()
