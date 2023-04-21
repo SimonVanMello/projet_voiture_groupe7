@@ -59,7 +59,7 @@ class Circle:
 
 
 
-class SensorFollower:
+class Circuit:
     def __init__(self):
         self.left_sensor = Ultrasonic(11, 9)
         self.front_sensor = Ultrasonic(6, 5)
@@ -68,68 +68,64 @@ class SensorFollower:
         self.dc = Dc()
         self.infra = Infra(20)
 
-    def getPositionFromDistance(self, prox_wall: str, distance: float) -> int:
-        print(f"proxWall: {prox_wall} - distance: {distance}")
-        if prox_wall == "right":
-            # turn left
-            # if distance < 10:
-            return 340
-            # elif distance < 20:
-            #     return 350
-            # elif distance <= 30:
-            #     return 360
-        elif prox_wall == "left":
-            # turn right
-            # if distance < 10:
-            return 500
-            # elif distance < 20:
-            #     return 500
-            # elif distance <= 30:
-            #     return 490
-
-    def follow_sensor(self):
+    def run(self):
         self.dc.setup()
-        self.dc.setSpeed(30)
+        self.dc.setSpeed(35)
         self.dc.forward()
-        self.prox_wall = ''
+        # servo positions
+        self.center = 410
+        self.left = 350
+        self.right = 490
+
         threadInfra = threading.Thread(target=self.infra.run)
         threadInfra.start()
+
         try:
             while self.infra.lapNumber <= 2:
-                left_distance = self.left_sensor.getDistance()
-                right_distance = self.right_sensor.getDistance()
                 front_distance = self.front_sensor.getDistance()
-                print(f"front distance: {front_distance}")
+                print(f"front distance: {front_distance}cm")
 
-                if left_distance < right_distance:
-                    self.prox_wall = "left"
-                else:
-                    self.prox_wall = "right"
-
-                # Determine which way to turn
-                print(f"left_distance: {left_distance} - right_distance: {right_distance}")
+                # priority to the front sensor
                 if front_distance < 20:
                     print(f"detected an obstacle at {front_distance}cm")
-                    self.servo.position = self.getPositionFromDistance(self.prox_wall, front_distance)
-                    time.sleep(1)
-                    self.servo.position = 410
+                    # slow down the car
+                    self.dc.setSpeed(20)
 
-                elif left_distance < right_distance:
-                    if left_distance < 20:
-                        self.servo.position = 500
-                        print('Tourne à droite')
+                    # turn in the opposite direction of the nearest wall
+                    if self.left_sensor.getDistance() < self.right_sensor.getDistance():
+                        self.servo.position = self.right
+                        print("Turning right")
                     else:
-                        self.servo.position = 410
-                        print('Mid')
+                        self.servo.position = self.left
+                        print("Turning left")
+                else:
+                    # return to normal speed
+                    self.dc.setSpeed(35)
+                    left_distance = self.left_sensor.getDistance()
+                    right_distance = self.right_sensor.getDistance()
+                    print(f"left distance: {left_distance}cm - right distance: {right_distance}cm")
 
-                elif left_distance > right_distance:
-                    if right_distance < 20:
-                        self.servo.position = 340
-                        print('Tourne à gauche')
-                    else:
-                        self.servo.position = 410
-                        print('Mid')
-                time.sleep(0.1)
+                    if left_distance < right_distance:
+                        if left_distance < 20:
+                            self.servo.position = self.right
+                            print('Turning right\n')
+                        else:
+                            self.servo.position = self.center
+                            print('Going straight\n')
+
+                    elif left_distance > right_distance:
+                        if right_distance < 20:
+                            self.servo.position = self.left
+                            print('Turning left\n')
+                        else:
+                            self.servo.position = self.center
+                            print('Going straight\n')
+
+                    # if the car is perfectly centered, do not turn
+                    elif left_distance == right_distance:
+                        self.servo.position = self.center
+
+                time.sleep(0.01)
             self.dc.stop()
             GPIO.cleanup()
         except KeyboardInterrupt:
@@ -187,8 +183,8 @@ print("1: main\n2: wall follower\n3: circle")
 choice = input("> ")
 
 if choice == "1":
-    sensorFollower = SensorFollower()
-    sensorFollower.follow_sensor()
+    circuit = Circuit()
+    circuit.run()
 elif choice == "2":
     wallFollower = FollowWall()
     wallFollower.followWall()
