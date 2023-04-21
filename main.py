@@ -58,8 +58,6 @@ class Circle:
         servo = SensorAndMotor()
         servo.position = 350
 
-
-
 class Circuit:
     def __init__(self, maxLapNumber: int, doRgb=False):
         self.left_sensor = Ultrasonic(11, 9)
