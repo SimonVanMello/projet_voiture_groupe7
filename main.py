@@ -5,6 +5,7 @@ from motors.Dc import Dc
 from motors.Servo import SensorAndMotor
 from sensors.Ultrasonic import Ultrasonic
 from sensors.Infra import Infra
+from sensors.Rgb import Rgb
 import time
 import RPi.GPIO as GPIO
 import threading
@@ -60,7 +61,7 @@ class Circle:
 
 
 class Circuit:
-    def __init__(self, maxLapNumber: int):
+    def __init__(self, maxLapNumber: int, rgb=False):
         self.left_sensor = Ultrasonic(11, 9)
         self.front_sensor = Ultrasonic(6, 5)
         self.right_sensor = Ultrasonic(26, 19)
@@ -87,6 +88,14 @@ class Circuit:
         threadInfra.start()
 
         try:
+            if self.rgb:
+                rgb = Rgb()
+                haveToWait = True
+                while haveToWait:
+                    if rgb.getGreen() > rgb.getRed():
+                        haveToWait = False
+                time.sleep(1)
+
             while self.infra.lapNumber <= self.maxLapNumber:
                 front_distance = self.front_sensor.getDistance()
                 print(f"front distance: {front_distance}cm")
@@ -167,7 +176,6 @@ class FollowWall:
                 left_distance = self.left_sensor.getDistance()
                 right_distance = self.right_sensor.getDistance()
 
-
                 if left_distance < right_distance:
                     if 20 < left_distance < 40:
                         self.servo.position = 410
@@ -201,11 +209,20 @@ print("1: circuit\n2: wall follower\n3: circle")
 choice = input("> ")
 
 if choice == "1":
-    lapNumber = input("Nombre de tours (default=2): ")
-    if lapNumber == "":
-        lapNumber = 2
-    circuit = Circuit(int(lapNumber))
-    circuit.run()
+    print("1: with rgb sensors\n2: without it")
+    inp = input("> ")
+    if inp == "1":
+        lapNumber = input("Nombre de tours (default=2): ")
+        if lapNumber == "":
+            lapNumber = 2
+        circuit = Circuit(int(lapNumber), True)
+        circuit.run()
+    elif inp == "2":
+        lapNumber = input("Nombre de tours (default=2): ")
+        if lapNumber == "":
+            lapNumber = 2
+        circuit = Circuit(int(lapNumber))
+        circuit.run()
 
 elif choice == "2":
     wallFollower = FollowWall()
