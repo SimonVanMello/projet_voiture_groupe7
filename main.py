@@ -93,15 +93,16 @@ class Circuit:
 
                 # priority to the front sensor
                 if front_distance < 20:
-                    if front_distance < 5:
-                        self.dc.stop()
-                        self.dc.setSpeed(50)
-                        self.dc.backward()
-                        time.sleep(2)
-                        self.dc.stop()
-                        self.servo.position = self.heavyLeft
-                        time.sleep(0.1)
-                        self.dc.forward()
+                    # if front_distance < 5:
+                    #     self.dc.stop()
+                    #     self.dc.setSpeed(40)
+                    #     self.servo.position = self.center
+                    #     self.dc.backward()
+                    #     time.sleep(1.5)
+                    #     self.dc.stop()
+                    #     self.servo.position = self.heavyLeft
+                    #     time.sleep(0.1)
+                    #     self.dc.forward()
 
                     print(f"detected an obstacle at {front_distance}cm")
                     # slow down the car
