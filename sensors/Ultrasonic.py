@@ -13,12 +13,12 @@ class Ultrasonic:
         GPIO.setup(self.GPIO_ECHO, GPIO.IN)
 
     def getDistance(self) -> float:
-        # Envoie une impulsion sur la broche TRIGGER
+        # send a pusle on trigger pin
         GPIO.output(self.GPIO_TRIGGER, True)
         time.sleep(0.00001)
         GPIO.output(self.GPIO_TRIGGER, False)
 
-        # Calcul du temps de réponse
+        # find response time
         pulse_start = time.time()
         while GPIO.input(self.GPIO_ECHO) == 0:
             pulse_start = time.time()
@@ -27,14 +27,12 @@ class Ultrasonic:
         while GPIO.input(self.GPIO_ECHO) == 1:
             pulse_end = time.time()
 
-        # Calcule la distance en cm
+        # get distance in cm
         pulse_duration = pulse_end - pulse_start
         distance = pulse_duration * 17150
         distance = round(distance, 2)
         return distance
 
-    # method that will run on another thread to get live distance
-    # TODO: create accessors for the distance attribute to access it from outside
     def run(self):
         try:
             while True:
