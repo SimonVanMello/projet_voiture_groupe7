@@ -73,7 +73,6 @@ class Circuit:
 
     def run(self):
         self.dc.setup()
-        self.dc.setSpeed(30)
         # servo positions
         self.center = 410
         self.lightLeft = 350
@@ -101,6 +100,7 @@ class Circuit:
                     time.sleep(1)
 
             self.dc.forward()
+            self.dc.setSpeed(30)
             while self.infra.lapNumber <= self.maxLapNumber:
                 front_distance = self.front_sensor.getDistance()
                 print(f"front distance: {front_distance}cm")
