@@ -10,6 +10,7 @@ from sensors.Ultrasonic import Ultrasonic
 import threading
 import time
 
+# double circle demo
 class Circle:
     def circleRight(self):
         try:
@@ -58,6 +59,7 @@ class Circle:
         servo = SensorAndMotor()
         servo.position = 350
 
+# final code
 class Circuit:
     def __init__(self, maxLapNumber: int, doRgb=False):
         self.left_sensor = Ultrasonic(11, 9)
@@ -95,8 +97,7 @@ class Circuit:
                     print(f"red: {red} - green {green}")
                     if green > red and green > 30:
                         print("green>red")
-                        if (red - green) > 10:
-                            haveToWait = False
+                        haveToWait = False
                     time.sleep(1)
 
             self.dc.forward()
@@ -106,16 +107,16 @@ class Circuit:
 
                 # priority to the front sensor
                 if front_distance < 20:
-                    # if front_distance < 5:
-                    #     self.dc.stop()
-                    #     self.dc.setSpeed(40)
-                    #     self.servo.position = self.center
-                    #     self.dc.backward()
-                    #     time.sleep(1.5)
-                    #     self.dc.stop()
-                    #     self.servo.position = self.heavyLeft
-                    #     time.sleep(0.1)
-                    #     self.dc.forward()
+                    if front_distance < 5:
+                        self.dc.stop()
+                        self.dc.setSpeed(40)
+                        self.servo.position = self.center
+                        self.dc.backward()
+                        time.sleep(1.5)
+                        self.dc.stop()
+                        self.servo.position = self.heavyLeft
+                        time.sleep(0.1)
+                        self.dc.forward()
 
                     print(f"detected an obstacle at {front_distance}cm")
                     # slow down the car
@@ -162,6 +163,7 @@ class Circuit:
             self.dc.stop()
             GPIO.cleanup()
 
+# wall follower demo
 class FollowWall:
     def __init__(self):
         self.left_sensor = Ultrasonic(11, 9)
